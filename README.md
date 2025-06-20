@@ -2,6 +2,38 @@
 
 This configuration has been set up for dual monitor usage with the following features:
 
+## Installation
+
+To install this i3 configuration on a new system:
+
+### Using SSH (recommended):
+```bash
+# Backup existing config if needed
+mv ~/.config/i3 ~/.config/i3.bak 2>/dev/null
+
+# Clone the repository
+git clone git@github.com:BeechcraftNV/i3.git ~/.config/i3
+
+# Make scripts executable
+chmod +x ~/.config/i3/scripts/*.sh
+chmod +x ~/.config/i3/switch-to-i3.sh
+```
+
+### Using HTTPS:
+```bash
+# Backup existing config if needed
+mv ~/.config/i3 ~/.config/i3.bak 2>/dev/null
+
+# Clone the repository
+git clone https://github.com/BeechcraftNV/i3.git ~/.config/i3
+
+# Make scripts executable
+chmod +x ~/.config/i3/scripts/*.sh
+chmod +x ~/.config/i3/switch-to-i3.sh
+```
+
+After installation, restart i3 with `Super+Shift+r` or log out and log back in.
+
 ## Monitor Setup
 - HDMI-1: Primary monitor (left)
 - HDMI-2: Secondary monitor (right)
