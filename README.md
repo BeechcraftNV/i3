@@ -24,6 +24,27 @@ This configuration has been set up for dual monitor usage with the following fea
 - `Mod1+1-0`: Switch to workspace 1-10
 - `Mod1+Shift+1-0`: Move window to workspace 1-10
 
+## Keybinding Documentation
+
+This configuration includes scripts to generate comprehensive keybinding documentation:
+
+- `scripts/generate-keybindings.sh`: Creates documentation of all keybindings in your config
+- `scripts/show-keybindings.sh`: Opens the generated documentation for quick reference
+
+Running `./scripts/generate-keybindings.sh` will create:
+- `keybindings.txt`: Plain text version with categorized keybindings
+- `keybindings.html`: HTML version with styled, formatted documentation
+
+The documentation automatically categorizes bindings into:
+- Window Management
+- Workspace Navigation
+- Application Launchers
+- System Controls
+- Layout Controls
+- Special Functions
+
+These files are regenerated on demand and are not tracked in version control.
+
 ## Visual Features
 - Custom color scheme with focus indicators
 - Window gaps and borders

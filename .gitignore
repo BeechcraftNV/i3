@@ -1,0 +1,47 @@
+# Temporary files
+*~
+*.swp
+*.swo
+.*.swp
+.*.swo
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Editor-specific files
+.vscode/
+.idea/
+*.sublime-*
+
+# Log files
+*.log
+logs/
+
+# Generated files that should be excluded
+keybindings.html
+keybindings.txt
+
+# Local environment files that might contain sensitive info
+.env
+*.local.sh
+*_local.conf
+
+# System-specific configurations
+# Uncomment these if you want to exclude certain system-specific configs
+# scripts/local-*.sh
+# monitor-specific-configs/
+
+# Cached files
+.cache/
+__pycache__/
+*.py[cod]
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
