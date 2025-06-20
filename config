@@ -1,0 +1,487 @@
+# Universal i3 Configuration
+# Combines the best features for seamless single and multi-monitor usage
+# Backup: config.backup.YYYYMMDD_HHMMSS
+# Version: Universal v1.0
+
+# i3 config file (v4)
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+# ============================================================================
+# BASIC SETTINGS
+# ============================================================================
+
+# Set mod key (Super/Windows key)
+set $mod Mod4
+
+# Improved font with better readability
+font pango:DejaVu Sans Mono 10
+
+# Focus follows mouse
+focus_follows_mouse yes
+
+# Window borders and gaps for better visual separation
+default_border pixel 2
+default_floating_border pixel 2
+hide_edge_borders smart
+
+# Gaps between windows (requires i3-gaps)
+gaps inner 8
+gaps outer 4
+smart_gaps on
+smart_borders on
+
+# ============================================================================
+# COLOR SCHEME
+# ============================================================================
+
+# Define colors (enhanced from current config)
+set $bg-color            #2f343f
+set $inactive-bg-color   #2f343f
+set $text-color          #f3f4f5
+set $inactive-text-color #676E7D
+set $urgent-bg-color     #E53935
+set $indicator-color     #00ff00
+set $focused-border      #4c7899
+
+# Window colors
+#                       border              background         text                 indicator
+client.focused          $focused-border     $bg-color          $text-color          $indicator-color
+client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color $indicator-color
+client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color $indicator-color
+client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $indicator-color
+client.placeholder      #000000             #0c0c0c            #ffffff              #000000
+client.background       #ffffff
+
+# ============================================================================
+# WORKSPACES - UNIVERSAL MULTI-MONITOR SUPPORT
+# ============================================================================
+
+# Define workspace names (combining descriptive names with monitor distribution)
+set $ws1 "1:Terminal"
+set $ws2 "2:Browser"
+set $ws3 "3:Code"
+set $ws4 "4:Files"
+set $ws5 "5:Media"
+set $ws6 "6:Chat"
+set $ws7 "7:Mail"
+set $ws8 "8:VM"
+set $ws9 "9:Misc"
+set $ws10 "10:Monitor"
+
+# Multi-monitor workspace distribution
+# Odd workspaces (1,3,5,7,9) → Primary monitor
+# Even workspaces (2,4,6,8,10) → Secondary monitor
+workspace $ws1 output HDMI-1 eDP-1 DP-1 VGA-1
+workspace $ws3 output HDMI-1 eDP-1 DP-1 VGA-1
+workspace $ws5 output HDMI-1 eDP-1 DP-1 VGA-1
+workspace $ws7 output HDMI-1 eDP-1 DP-1 VGA-1
+workspace $ws9 output HDMI-1 eDP-1 DP-1 VGA-1
+
+workspace $ws2 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
+workspace $ws4 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
+workspace $ws6 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
+workspace $ws8 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
+workspace $ws10 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
+
+# Switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+# Move to workspace with focused container (enhanced from current config)
+bindsym $mod+Ctrl+1 move container to workspace $ws1; workspace $ws1
+bindsym $mod+Ctrl+2 move container to workspace $ws2; workspace $ws2
+bindsym $mod+Ctrl+3 move container to workspace $ws3; workspace $ws3
+bindsym $mod+Ctrl+4 move container to workspace $ws4; workspace $ws4
+bindsym $mod+Ctrl+5 move container to workspace $ws5; workspace $ws5
+bindsym $mod+Ctrl+6 move container to workspace $ws6; workspace $ws6
+bindsym $mod+Ctrl+7 move container to workspace $ws7; workspace $ws7
+bindsym $mod+Ctrl+8 move container to workspace $ws8; workspace $ws8
+bindsym $mod+Ctrl+9 move container to workspace $ws9; workspace $ws9
+bindsym $mod+Ctrl+0 move container to workspace $ws10; workspace $ws10
+
+# Navigate workspaces next / previous
+bindsym $mod+Ctrl+Right workspace next
+bindsym $mod+Ctrl+Left workspace prev
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
+# ============================================================================
+# AUTOSTART APPLICATIONS - ENHANCED WITH FALLBACKS
+# ============================================================================
+
+# XDG autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# Screen locking (with fallback)
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy --nofork || xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# Network manager applet
+exec --no-startup-id nm-applet
+
+# Notification daemon
+exec --no-startup-id dunst
+
+# Bluetooth manager applet (with fallback)
+exec --no-startup-id blueman-applet || true
+
+# Compositor for better visuals (with fallback detection)
+exec --no-startup-id command -v picom > /dev/null && picom --config ~/.config/picom/picom.conf -b || true
+
+# Dynamic monitor setup - critical for multi-monitor support
+exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh
+
+# Wallpaper with fallback
+exec --no-startup-id if [ -f ~/.config/i3/wallpaper.jpg ]; then feh --bg-scale ~/.config/i3/wallpaper.jpg; else xsetroot -solid "#2e3440"; fi
+
+# Pre-warm workspaces to ensure they exist (from manjaro config)
+exec --no-startup-id i3-msg "workspace $ws1; workspace $ws2; workspace $ws1"
+
+# Start applications on specific workspaces (with delays for proper assignment)
+exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"$ws1\"; exec warp-terminal || i3-sensible-terminal'"
+exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"$ws2\"; exec brave || firefox'"
+exec --no-startup-id sh -c "sleep 3 && command -v code > /dev/null && i3-msg 'workspace \"$ws3\"; exec code' || true"
+exec --no-startup-id sh -c "sleep 3 && command -v filebrowser > /dev/null && i3-msg 'workspace \"$ws4\"; exec filebrowser' || true"
+
+# ============================================================================
+# KEY BINDINGS - BASIC CONTROLS
+# ============================================================================
+
+# Use Mouse+$mod to drag floating windows
+floating_modifier $mod
+
+# Tiling drag
+tiling_drag modifier titlebar
+
+# Terminal launchers (with fallbacks)
+bindsym $mod+Return exec warp-terminal || i3-sensible-terminal
+bindsym $mod+Shift+Return exec --no-startup-id i3-msg 'exec warp-terminal || i3-sensible-terminal; [class=".*"] move scratchpad'
+
+# Scratchpad support (from manjaro config)
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+bindsym $mod+grave scratchpad show
+
+# Kill focused window
+bindsym $mod+Shift+q kill
+
+# Program launcher with fallbacks
+bindsym $mod+d exec --no-startup-id "command -v rofi > /dev/null && rofi -show drun -show-icons || dmenu_run"
+
+# Quick application launchers (with fallbacks)
+bindsym $mod+Shift+b exec brave || firefox
+bindsym $mod+Shift+t exec warp-terminal || i3-sensible-terminal
+bindsym $mod+Shift+m exec blueman-manager || true
+bindsym $mod+Shift+f exec "command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~"
+
+# Monitor configuration hotkey
+bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh
+
+# Window marking system for quick navigation
+bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+
+# Smart gaps toggle
+bindsym $mod+Shift+g gaps inner current toggle 8
+
+# ============================================================================
+# KEY BINDINGS - WINDOW MANAGEMENT
+# ============================================================================
+
+# Change focus (vim-style - keeping current config preference)
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Change focus (arrow keys)
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window (vim-style)
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Move focused window (arrow keys)
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Split orientation
+bindsym $mod+b split h
+bindsym $mod+v split v
+
+# Fullscreen mode
+bindsym $mod+f fullscreen toggle
+
+# Container layout
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# Toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# Change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# Focus parent/child container
+bindsym $mod+a focus parent
+bindsym $mod+c focus child
+
+# ============================================================================
+# KEY BINDINGS - SYSTEM CONTROLS
+# ============================================================================
+
+# Volume controls (using pactl - more modern)
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Alternative volume controls (for keyboards without function keys)
+bindsym $mod+F11 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym $mod+F12 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym $mod+F10 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+
+# Media player controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# Brightness controls (if available)
+bindsym XF86MonBrightnessUp exec light -A 10 || xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec light -U 10 || xbacklight -dec 10
+
+# Screenshots (using maim) - all copy to clipboard by default
+bindsym Print exec --no-startup-id "maim | xclip -selection clipboard -t image/png && (notify-send 'Screenshot copied' 'Fullscreen screenshot copied to clipboard' || true)"
+bindsym $mod+Print exec --no-startup-id "maim --select | xclip -selection clipboard -t image/png && (notify-send 'Screenshot copied' 'Selected area screenshot copied to clipboard' || true)"
+bindsym Shift+Print exec --no-startup-id "mkdir -p ~/Pictures && maim --select ~/Pictures/screenshot-$(date +%Y%m%d_%H%M%S).png && (notify-send 'Screenshot saved' 'Selected area screenshot saved to ~/Pictures' || true)"
+
+# Lock screen (with fallback)
+bindsym $mod+shift+x exec i3lock-fancy || i3lock -c 000000
+
+# ============================================================================
+# APPLICATION ASSIGNMENTS - ENHANCED
+# ============================================================================
+
+# Assign applications to workspaces
+assign [class="Warp"] $ws1
+assign [class="warp-terminal"] $ws1
+assign [class="Alacritty"] $ws1
+assign [class="Kitty"] $ws1
+
+assign [class="Brave-browser"] $ws2
+assign [class="brave-browser"] $ws2
+assign [class="Brave"] $ws2
+assign [class="Firefox"] $ws2
+assign [class="Chromium"] $ws2
+
+assign [class="Code"] $ws3
+assign [class="VSCodium"] $ws3
+assign [class="code-oss"] $ws3
+assign [class="Atom"] $ws3
+
+assign [class="Nautilus"] $ws4
+assign [class="Thunar"] $ws4
+assign [class="Pcmanfm"] $ws4
+assign [class="Nemo"] $ws4
+
+assign [class="vlc"] $ws5
+assign [class="mpv"] $ws5
+assign [class="Spotify"] $ws5
+assign [class="Rhythmbox"] $ws5
+
+assign [class="Discord"] $ws6
+assign [class="Slack"] $ws6
+assign [class="Signal"] $ws6
+assign [class="TelegramDesktop"] $ws6
+
+assign [class="Thunderbird"] $ws7
+assign [class="Evolution"] $ws7
+assign [class="Geary"] $ws7
+
+assign [class="VirtualBox"] $ws8
+assign [class="Virt-manager"] $ws8
+assign [class="Boxes"] $ws8
+
+assign [class="htop"] $ws10
+assign [class="System Monitor"] $ws10
+assign [class="Gnome-system-monitor"] $ws10
+
+# ============================================================================
+# FLOATING WINDOWS - COMPREHENSIVE RULES
+# ============================================================================
+
+# Set floating for window types
+for_window [window_type="dialog"] floating enable
+for_window [window_type="utility"] floating enable
+for_window [window_type="toolbar"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+
+# Set floating for specific applications
+for_window [class="Arandr"] floating enable sticky enable border normal
+for_window [class="Blueman-manager"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Nm-connection-editor"] floating enable
+for_window [class="Lxappearance"] floating enable sticky enable border normal
+for_window [title="File Transfer*"] floating enable
+for_window [class="Galculator"] floating enable border pixel 1
+for_window [class="Calculator"] floating enable border pixel 1
+for_window [class="GParted"] floating enable border normal
+for_window [title="i3_help"] floating enable sticky enable border normal
+for_window [class="Lightdm-settings"] floating enable
+for_window [class="Oblogout"] fullscreen enable
+for_window [class="Pamac-manager"] floating enable
+for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
+for_window [class="Simple-scan"] floating enable border normal
+for_window [class="(?i)System-config-printer.py"] floating enable border normal
+for_window [class="Timeset-gui"] floating enable border normal
+for_window [class="(?i)virtualbox"] floating enable border normal
+for_window [class="Xfburn"] floating enable
+for_window [class="Yad"] floating enable
+for_window [class="feh"] floating enable
+
+# ============================================================================
+# MODES
+# ============================================================================
+
+# Resize mode (enhanced)
+mode "resize" {
+        bindsym h resize shrink width 5 px or 5 ppt
+        bindsym j resize grow height 5 px or 5 ppt
+        bindsym k resize shrink height 5 px or 5 ppt
+        bindsym l resize grow width 5 px or 5 ppt
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# System mode (enhanced from current config)
+set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id i3lock-fancy || i3lock -c 000000, mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym u exec --no-startup-id dm-tool switch-to-greeter, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Pause mode "$mode_system"
+
+# Alternative sleep binding for laptops without Pause key
+bindsym $mod+Shift+s exec --no-startup-id systemctl suspend
+
+# ============================================================================
+# i3 MANAGEMENT
+# ============================================================================
+
+# Reload the configuration file
+bindsym $mod+Shift+c reload
+
+# Restart i3 inplace (preserves your layout/session)
+bindsym $mod+Shift+r restart
+
+# Exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# Save current workspace layout (bonus feature)
+bindsym $mod+Shift+w exec --no-startup-id i3-save-tree --workspace current > ~/.config/i3/workspace-$(date +%Y%m%d_%H%M%S).json
+
+# ============================================================================
+# STATUS BAR - ENHANCED
+# ============================================================================
+
+bar {
+        status_command i3blocks -c ~/.config/i3/i3blocks.conf
+        position top
+        tray_output primary
+        tray_padding 2
+        
+        colors {
+                background $bg-color
+                separator #757575
+                #                  border             background         text
+                focused_workspace  $focused-border    $bg-color          $text-color
+                inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+                urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
+                binding_mode       $urgent-bg-color   $urgent-bg-color   $text-color
+        }
+}
+
+# ============================================================================
+# ADDITIONAL UNIVERSAL SETTINGS
+# ============================================================================
+
+# Automatically switch back to previous workspace
+workspace_auto_back_and_forth yes
+
+# Show marks on window decoration
+show_marks yes
+
+# Smart popup handling during fullscreen
+popup_during_fullscreen smart
+
+# Default workspace layout
+workspace_layout default
+
+# Window title alignment
+title_align center
+
+# Focus wrapping (useful for multi-monitor)
+focus_wrapping no
+
+# Force focus wrapping for workspaces
+force_focus_wrapping no
+
+# Automatic back-and-forth
+workspace_auto_back_and_forth yes
+
+# Keybinding helper hotkey
+bindsym $mod+F1 exec --no-startup-id ~/.config/i3/scripts/show-keybindings.sh
+
+# Auto-start config watcher  
+exec --no-startup-id ~/.config/i3/scripts/watch-config.sh
+
+# ============================================================================
+# END OF UNIVERSAL CONFIGURATION
+# ============================================================================
