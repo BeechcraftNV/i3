@@ -108,3 +108,53 @@ Place your desired wallpaper as `~/.config/i3/wallpaper.jpg` or modify the feh c
 - `Mod1+Shift+c`: Reload i3 configuration
 - `Mod1+Shift+r`: Restart i3 in place
 
+---
+
+## 📦 Required Applications (Full Functionality)
+
+This configuration references several external tools that must be installed for full functionality:
+
+| Package (Debian)         | Package (Arch)       | Purpose                                     |
+|--------------------------|----------------------|---------------------------------------------|
+| `i3`                     | `i3-wm`              | Tiling window manager                       |
+| `i3blocks`               | `i3blocks`           | Status bar with modular blocks              |
+| `feh`                    | `feh`                | Set wallpaper                               |
+| `picom`                  | `picom`              | Compositor for transparency and shadows     |
+| `xss-lock`               | `xss-lock`           | Lock screen on suspend                      |
+| `i3lock`                 | `i3lock`             | Lock screen utility                         |
+| `rofi`                   | `rofi`               | Application launcher                        |
+| `dex`                    | `dex`                | Desktop autostart helper                    |
+| `nm-applet`              | `network-manager-applet` | System tray network manager GUI       |
+| `flameshot` or `scrot`   | `flameshot` or `scrot` | Screenshots (GUI or CLI-based)          |
+| `xsetroot`               | `xorg-xsetroot`      | Set root window background color            |
+
+> **Tip:** If you're getting an error like `status command not found (exit 127)`, it usually means `i3blocks` or another dependency is missing.
+
+---
+
+## 🛠️ Install All Required Apps (Debian/Ubuntu)
+
+If you're on a Debian-based distro (e.g. LMDE or Ubuntu), install all required apps with:
+
+```bash
+sudo apt update && sudo apt install -y \
+  i3 i3blocks feh picom xss-lock i3lock rofi dex \
+  network-manager-gnome flameshot x11-xserver-utils
+```
+
+Or use a setup script:
+
+```bash
+#!/bin/bash
+echo "Installing i3 dependencies..."
+sudo apt update && sudo apt install -y \
+  i3 i3blocks feh picom xss-lock i3lock rofi dex \
+  network-manager-gnome flameshot x11-xserver-utils
+```
+
+Save as `setup-debian.sh` and run:
+
+```bash
+chmod +x setup-debian.sh
+./setup-debian.sh
+```
