@@ -28,6 +28,7 @@ hide_edge_borders smart
 gaps inner 8
 gaps outer 4
 smart_gaps on
+smart_borders on
 
 # ============================================================================
 # COLOR SCHEME
@@ -145,9 +146,6 @@ exec --no-startup-id blueman-applet || true
 
 # Compositor for better visuals (with fallback detection)
 exec --no-startup-id command -v picom > /dev/null && picom --config ~/.config/picom/picom.conf -b || true
-
-# Flameshot for advanced screenshot management
-exec --no-startup-id flameshot
 
 # Dynamic monitor setup - critical for multi-monitor support
 exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh
@@ -281,23 +279,13 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86MonBrightnessUp exec light -A 10 || xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec light -U 10 || xbacklight -dec 10
 
-# Screenshots - Comprehensive Flameshot System
-# Print Screen - Full screen (active monitor only)
-bindsym Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh full
-# Mod+Print - Interactive selection with GUI editor
-bindsym $mod+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh gui
-# Shift+Print - Active window screenshot
-bindsym Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh window
-# Ctrl+Print - Quick selection to clipboard only
-bindsym Ctrl+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh clipboard
-# Ctrl+Shift+Print - Open Flameshot config
-bindsym Ctrl+Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh config
+# Screenshots (using maim) - all copy to clipboard by default
+bindsym Print exec --no-startup-id "maim | xclip -selection clipboard -t image/png && (notify-send 'Screenshot copied' 'Fullscreen screenshot copied to clipboard' || true)"
+bindsym $mod+Print exec --no-startup-id "maim --select | xclip -selection clipboard -t image/png && (notify-send 'Screenshot copied' 'Selected area screenshot copied to clipboard' || true)"
+bindsym Shift+Print exec --no-startup-id "mkdir -p ~/Pictures && maim --select ~/Pictures/screenshot-$(date +%Y%m%d_%H%M%S).png && (notify-send 'Screenshot saved' 'Selected area screenshot saved to ~/Pictures' || true)"
 
 # Lock screen (with fallback)
 bindsym $mod+shift+x exec i3lock-fancy || i3lock -c 000000
-
-# Print management
-bindsym $mod+Ctrl+p exec --no-startup-id "rofi -dmenu -p 'Print:' <<< $'Print Test Page\nPrint Queue Status\nClear Print Queue\nCUPS Web Interface' | while read choice; do case '$choice' in 'Print Test Page') lp -d DCP-L2550DW /usr/share/cups/data/testprint && notify-send 'Print' 'Test page sent to printer' ;; 'Print Queue Status') notify-send 'Print Queue' \"$(lpq -P DCP-L2550DW)\" ;; 'Clear Print Queue') cancel -a DCP-L2550DW && notify-send 'Print' 'Queue cleared' ;; 'CUPS Web Interface') xdg-open http://localhost:631 ;; esac; done"
 
 # ============================================================================
 # APPLICATION ASSIGNMENTS - ENHANCED
@@ -487,12 +475,6 @@ force_focus_wrapping no
 
 # Automatic back-and-forth
 workspace_auto_back_and_forth yes
-
-# Keybinding helper hotkey
-bindsym $mod+F1 exec --no-startup-id ~/.config/i3/scripts/show-keybindings.sh
-
-# Auto-start config watcher  
-exec --no-startup-id ~/.config/i3/scripts/watch-config.sh
 
 # ============================================================================
 # END OF UNIVERSAL CONFIGURATION

@@ -1,5 +1,5 @@
 ==================== i3 KEYBINDING REFERENCE ====================
-Generated: Fri Jun 20 07:56:27 AM PDT 2025
+Generated: Sun Jun 22 09:19:56 PM PDT 2025
 ==================================================================
 
 🪟 WINDOW MANAGEMENT:
@@ -68,6 +68,7 @@ Generated: Fri Jun 20 07:56:27 AM PDT 2025
   $mod+Shift+b         → exec brave || firefox
   $mod+Shift+t         → exec warp-terminal || i3-sensible-terminal
   $mod+Shift+f         → exec "command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~"
+  $mod+Ctrl+p          → "rofi -dmenu -p 'Print:' <<< $'Print Test Page\nPrint Queue Status\nClear Print Queue\nCUPS Web Interface' | while read choice; do case '$choice' in 'Print Test Page') lp -d DCP-L2550DW /usr/share/cups/data/testprint && notify-send 'Print' 'Test page sent to printer' ;; 'Print Queue Status') notify-send 'Print Queue' \"$(lpq -P DCP-L2550DW)\" ;; 'Clear Print Queue') cancel -a DCP-L2550DW && notify-send 'Print' 'Queue cleared' ;; 'CUPS Web Interface') xdg-open http://localhost:631 ;; esac; done"
 
 ⚙️  SYSTEM CONTROLS:
   XF86AudioRaiseVolume → exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
