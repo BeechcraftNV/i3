@@ -32,7 +32,7 @@ elif [ "$CONNECTED_COUNT" -eq 2 ]; then
     # Detect if we have a laptop (eDP) + external monitor setup
     if [[ "$PRIMARY_DISPLAY" =~ ^eDP ]]; then
         # Laptop + external monitor: external becomes primary, laptop secondary
-        xrandr --output "$SECONDARY_DISPLAY" --primary --auto --output "$PRIMARY_DISPLAY" --auto --below "$SECONDARY_DISPLAY"
+        xrandr --output "$SECONDARY_DISPLAY" --primary --auto --output "$PRIMARY_DISPLAY" --auto --right-of "$SECONDARY_DISPLAY"
     else
         # Two external monitors: arrange side by side
         xrandr --output "$PRIMARY_DISPLAY" --primary --auto --output "$SECONDARY_DISPLAY" --auto --right-of "$PRIMARY_DISPLAY"
