@@ -65,7 +65,7 @@ set $ws6 "6:Chat"
 set $ws7 "7:Mail"
 set $ws8 "8:VM"
 set $ws9 "9:Misc"
-set $ws10 "10:Monitor"
+set $ws10 "10:AI"
 
 # Multi-monitor workspace distribution
 # Odd workspaces (1,3,5,7,9) → Primary monitor
@@ -205,6 +205,9 @@ bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: 
 # Smart gaps toggle
 bindsym $mod+Shift+g gaps inner current toggle 8
 
+# Open help utility
+bindsym $mod+Mod1+h exec python3 ~/.config/i3/scripts/i3-help.py
+
 # ============================================================================
 # KEY BINDINGS - WINDOW MANAGEMENT
 # ============================================================================
@@ -296,8 +299,10 @@ bindsym Ctrl+Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh
 # Lock screen (with fallback)
 bindsym $mod+shift+x exec i3lock-fancy || i3lock -c 000000
 
-# Print management
-bindsym $mod+Ctrl+p exec --no-startup-id "rofi -dmenu -p 'Print:' <<< $'Print Test Page\nPrint Queue Status\nClear Print Queue\nCUPS Web Interface' | while read choice; do case '$choice' in 'Print Test Page') lp -d DCP-L2550DW /usr/share/cups/data/testprint && notify-send 'Print' 'Test page sent to printer' ;; 'Print Queue Status') notify-send 'Print Queue' \"$(lpq -P DCP-L2550DW)\" ;; 'Clear Print Queue') cancel -a DCP-L2550DW && notify-send 'Print' 'Queue cleared' ;; 'CUPS Web Interface') xdg-open http://localhost:631 ;; esac; done"
+# Print management - Enhanced with dedicated script
+bindsym $mod+Ctrl+p exec --no-startup-id ~/.config/i3/scripts/printer-manager.sh menu
+bindsym $mod+Shift+Ctrl+p exec --no-startup-id ~/.config/i3/scripts/printer-manager.sh config
+bindsym $mod+Alt+p exec --no-startup-id ~/.config/i3/scripts/printer-manager.sh test
 
 # ============================================================================
 # APPLICATION ASSIGNMENTS - ENHANCED
