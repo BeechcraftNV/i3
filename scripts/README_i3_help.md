@@ -23,6 +23,20 @@ A comprehensive, intelligent keybinding help system featuring conceptual search,
 
 ## ✨ Core Features Overview
 
+### 🤖 **Natural Language Search** (NEW!)
+- **💬 Ask Questions Naturally**: "How do I resize a window?" → finds resize bindings
+- **🧠 Intent Understanding**: "Make this bigger" → understands you want resize/fullscreen
+- **🎯 Context-Aware**: "Move to other screen" → finds monitor movement commands
+- **📊 Relevance Scoring**: Results ranked by semantic similarity to your query
+- **💡 Smart Suggestions**: If no exact matches, suggests alternative queries
+
+### 🔍 **Keybinding Conflict Detection** (NEW!)
+- **⚠️ Duplicate Detection**: Find keybindings defined multiple times
+- **🚫 Shadowing Analysis**: Identify bindings that override others
+- **🔄 Mode Conflict Check**: Detect conflicts between normal and mode bindings  
+- **📊 Comprehensive Reports**: JSON and text reports with detailed analysis
+- **🎯 Unused Suggestions**: Discover available key combinations you could use
+
 ### 🔍 **Advanced Conceptual Search**
 - **🎯 Synonym Expansion**: Search "screenshot" → finds "Print", "capture", "grab" bindings
 - **🧠 Intent Mapping**: Search "open browser" → finds Firefox, Brave, Chrome launchers  
@@ -93,6 +107,8 @@ A comprehensive, intelligent keybinding help system featuring conceptual search,
    cp keyboard_layout.py ~/.config/i3/scripts/
    cp nlp_query_processor.py ~/.config/i3/scripts/
    cp search_learning_system.py ~/.config/i3/scripts/
+   cp conflict_detector.py ~/.config/i3/scripts/
+   cp natural_language_search.py ~/.config/i3/scripts/
    
    # Make main script executable
    chmod +x ~/.config/i3/scripts/i3-help.py
@@ -103,6 +119,8 @@ A comprehensive, intelligent keybinding help system featuring conceptual search,
    # Add to ~/.config/i3/config
    # Enhanced keybinding help system
    bindsym $mod+Alt+h exec python3 ~/.config/i3/scripts/i3-help.py
+   bindsym $mod+Alt+c exec python3 ~/.config/i3/scripts/i3-help.py --conflicts
+   bindsym $mod+Alt+n exec python3 ~/.config/i3/scripts/i3-help.py --natural
    ```
 
 3. **📦 Install Dependencies**:
@@ -124,7 +142,15 @@ A comprehensive, intelligent keybinding help system featuring conceptual search,
 ```bash
 # Test the installation
 cd ~/.config/i3/scripts/
-python3 i3-help.py --test  # Verify all modules load correctly
+
+# Show help output
+python3 i3-help.py --help
+
+# Test conflict detection
+python3 i3-help.py --conflicts
+
+# Test natural language search
+python3 i3-help.py --search "how do I resize a window?"
 ```
 
 ## 🎮 Usage Guide
@@ -134,6 +160,18 @@ python3 i3-help.py --test  # Verify all modules load correctly
 2. **🔍 Search**: Type conceptual terms like "screenshot", "volume", "browser"
 3. **📱 Navigate**: Use arrow keys to browse, Enter to select a keybinding
 4. **⚡ Act**: Choose from the action menu to execute, copy, or get details
+
+### **🤖 Natural Language Mode**
+1. **Launch**: Press `Super+Alt+N` or select from action menu
+2. **💬 Ask**: Type questions like "How do I make this window bigger?"
+3. **📊 Review**: See ranked results based on relevance
+4. **🎯 Select**: Choose the best match for your needs
+
+### **🔍 Conflict Detection**
+1. **Launch**: Press `Super+Alt+C` or select from action menu
+2. **⚠️ Analyze**: System scans all keybindings for issues
+3. **📋 Review**: See detailed report of conflicts and issues
+4. **💡 Fix**: Get suggestions for resolving conflicts
 
 ### **🔍 Search Examples**
 
@@ -149,6 +187,17 @@ python3 i3-help.py --test  # Verify all modules load correctly
 | `"workspace"` | All workspace operations | Category matching |
 | `"sceenshot"` | Screenshot bindings | Typo correction |
 
+### **💬 Natural Language Examples**
+
+| 🤖 Question | 🎯 Finds | 🧠 Understanding |
+|-------------|----------|------------------|
+| `"How do I resize a window?"` | Resize mode, Super+r | Understands resize intent |
+| `"Make this bigger"` | Fullscreen, resize bindings | Maps to size adjustment |
+| `"Move to the left screen"` | Move to output left | Understands monitor movement |
+| `"Open a new terminal"` | Terminal launch bindings | Maps to application launch |
+| `"Lock my computer"` | i3lock bindings | Understands security intent |
+| `"Take a screenshot"` | All screenshot bindings | Natural phrasing understood |
+
 ### **🎭 Action Menu Options**
 When you select a keybinding, you get these powerful actions:
 
@@ -159,6 +208,8 @@ When you select a keybinding, you get these powerful actions:
 - **⌨️ Show Key Layout**: Visual keyboard layout with highlighted keys (if available)
 - **📄 Export Keybindings**: Generate professional documentation in your choice of format
 - **🧠 Learning Stats**: View self-learning system statistics and manage improvements
+- **🔍 Check for Conflicts**: Analyze keybindings for duplicates and issues
+- **🤖 Natural Language Help**: Ask questions in plain English
 
 ### **📄 Export Functionality**
 Generate professional documentation with one click:
@@ -252,12 +303,15 @@ The script works with multiple launchers:
 
 ### **📁 Module Structure**
 - **`i3-help.py`**: Main application with UI, search, and action handling
+- **`conflict_detector.py`**: Keybinding conflict detection and analysis
+- **`natural_language_search.py`**: Natural language query processing and understanding
 - **`export_engine.py`**: Professional documentation generation in multiple formats  
 - **`keyboard_layout.py`**: Visual keyboard layout rendering and key highlighting
 - **`nlp_query_processor.py`**: Advanced natural language processing for search queries
 - **`search_learning_system.py`**: Self-learning intelligence system for continuous improvement
 - **`search_dictionaries.json`**: Customizable synonym, intent, and typo correction database
 - **`learning_data.json`**: Learning system data (automatically created and maintained)
+- **`conflict_report.json/txt`**: Conflict analysis reports (generated on demand)
 
 ### **🔄 Core Processing Pipeline**
 1. **🔍 Config Parsing**: Extract and parse all bindsym entries from i3 config
@@ -375,16 +429,20 @@ The script integrates with:
 
 ## 🎉 Project Status & Roadmap
 
-### **✅ Completed Features (Top 6 Most Impactful)**
-1. **🔍 Enhanced Conceptual Search**: Intelligent synonym expansion, intent mapping, typo correction
-2. **🧠 Self-Learning AI System**: Automatically learns from failed searches and improves search accuracy
-3. **📱 Interactive Action System**: Execute, copy, view details, show keyboard layout from any binding
-4. **📊 Usage Analytics & Intelligence**: Track usage patterns, smart ranking, personalized suggestions
-5. **⌨️ Visual Keyboard Layout**: Interactive keyboard visualization with key highlighting
-6. **📄 Professional Export Formats**: Generate documentation in HTML, PDF, Markdown, JSON, and Plain Text
+### **✅ Completed Features (Top 8 Most Impactful)**
+1. **🤖 Natural Language Search**: Ask questions naturally and get intelligent answers
+2. **🔍 Conflict Detection**: Identify duplicate, shadowed, and problematic keybindings
+3. **🔍 Enhanced Conceptual Search**: Intelligent synonym expansion, intent mapping, typo correction
+4. **🧠 Self-Learning AI System**: Automatically learns from failed searches and improves search accuracy
+5. **📱 Interactive Action System**: Execute, copy, view details, show keyboard layout from any binding
+6. **📊 Usage Analytics & Intelligence**: Track usage patterns, smart ranking, personalized suggestions
+7. **⌨️ Visual Keyboard Layout**: Interactive keyboard visualization with key highlighting
+8. **📄 Professional Export Formats**: Generate documentation in HTML, PDF, Markdown, JSON, and Plain Text
 
 ### **🚀 Key Achievements**
 - **112 Keybindings** automatically categorized and searchable
+- **Natural Language Interface** for asking questions in plain English
+- **Conflict Detection System** for identifying and resolving keybinding issues
 - **5 Export Formats** with professional styling and interactive features
 - **Self-Learning AI System** that continuously improves search accuracy
 - **Advanced Search Engine** with multi-layer intelligence and learning capabilities

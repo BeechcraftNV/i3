@@ -1,20 +1,42 @@
 #!/usr/bin/env python3
 """
-i3 Keybinding Help - Enhanced conceptual search with synonyms and intents
+i3 Keybinding Help System - Advanced AI-Enhanced Documentation Tool
 
 Features:
+- Natural Language Search: Ask questions like "how do I resize a window?"
+- Conflict Detection: Find duplicate, shadowed, and problematic keybindings
+- Self-Learning AI: Automatically improves search accuracy from usage patterns
 - Synonym expansion (screenshot → snapshot, capture, grab, etc.)
 - Intent mapping (open browser → firefox, brave, chrome, etc.) 
 - Typo tolerance and fuzzy matching
 - Hierarchical categorization with sub-categories
 - Rich contextual descriptions
+- Professional export (PDF, HTML, Markdown, JSON)
+- Visual keyboard layouts
+- Usage analytics and tracking
 - External dictionaries for user customization
 
-Usage: python3 i3-help.py
-Add to i3 config: bindsym $mod+Alt+h exec python3 ~/.config/i3/scripts/i3-help.py
+Usage:
+  i3-help.py                    # Interactive keybinding browser
+  i3-help.py --conflicts        # Check for keybinding conflicts
+  i3-help.py --natural          # Natural language search interface
+  i3-help.py --search "query"   # Search for specific bindings
 
-Dependencies (optional): rapidfuzz for enhanced fuzzy matching
-Dictionaries: search_dictionaries.json for synonyms and intents
+Keybindings (add to i3 config):
+  bindsym $mod+Alt+h exec python3 ~/.config/i3/scripts/i3-help.py
+  bindsym $mod+Alt+c exec python3 ~/.config/i3/scripts/i3-help.py --conflicts
+  bindsym $mod+Alt+n exec python3 ~/.config/i3/scripts/i3-help.py --natural
+
+Dependencies (optional):
+  - rapidfuzz: Enhanced fuzzy matching
+  - weasyprint: PDF export support
+  - Additional modules enhance functionality but are not required
+
+Files:
+  - search_dictionaries.json: Synonyms, intents, and typo corrections
+  - usage_analytics.json: Usage tracking data (auto-generated)
+  - learning_data.json: Self-learning AI data (auto-generated)
+  - conflict_report.json/txt: Conflict analysis reports (generated on demand)
 """
 
 import json
@@ -57,6 +79,22 @@ try:
 except ImportError:
     LEARNING_AVAILABLE = False
     SearchLearningSystem = None
+
+# Import conflict detector
+try:
+    from conflict_detector import KeybindingConflictDetector
+    CONFLICT_AVAILABLE = True
+except ImportError:
+    CONFLICT_AVAILABLE = False
+    KeybindingConflictDetector = None
+
+# Import natural language search
+try:
+    from natural_language_search import NaturalLanguageHelp
+    NATURAL_LANGUAGE_AVAILABLE = True
+except ImportError:
+    NATURAL_LANGUAGE_AVAILABLE = False
+    NaturalLanguageHelp = None
 
 # Try to import rapidfuzz for enhanced fuzzy matching
 try:
@@ -144,6 +182,12 @@ class I3KeybindingHelper:
         self.nlp_processor = None
         if NLP_AVAILABLE:
             self.nlp_processor = NLPQueryProcessor(self.dictionaries_path)
+        
+        # Initialize conflict detector (lazy loading)
+        self.conflict_detector = None
+        
+        # Initialize natural language helper (lazy loading)
+        self.nl_help = None
     
     def load_dictionaries(self) -> None:
         """Load synonym, intent, and typo dictionaries from JSON file"""
@@ -1156,6 +1200,14 @@ class I3KeybindingHelper:
         if LEARNING_AVAILABLE and self.learning_system:
             actions.insert(-1, "🧠 Learning Stats")
         
+        # Add conflict detection option if available
+        if CONFLICT_AVAILABLE:
+            actions.insert(-1, "🔍 Check for Conflicts")
+        
+        # Add natural language help option if available
+        if NATURAL_LANGUAGE_AVAILABLE:
+            actions.insert(-1, "🤖 Natural Language Help")
+        
         try:
             launcher = self.find_launcher()
             if not launcher:
@@ -1199,6 +1251,10 @@ class I3KeybindingHelper:
                     self.show_export_menu()
                 elif "Learning Stats" in selected_action:
                     self.show_learning_stats()
+                elif "Check for Conflicts" in selected_action:
+                    self.show_conflict_report()
+                elif "Natural Language Help" in selected_action:
+                    self.show_natural_language_prompt()
                     
         except Exception as e:
             subprocess.run(['notify-send', 'i3 Help Error', f'Action menu failed: {str(e)}'])
@@ -1215,6 +1271,203 @@ class I3KeybindingHelper:
                     return binding
         
         return None
+    
+    def show_conflict_report(self) -> None:
+        """Show keybinding conflict analysis"""
+        if not CONFLICT_AVAILABLE:
+            subprocess.run(['notify-send', 'i3 Help', 'Conflict detection not available'])
+            return
+        
+        # Initialize conflict detector if needed
+        if not self.conflict_detector:
+            self.conflict_detector = KeybindingConflictDetector()
+        
+        subprocess.run(['notify-send', 'Analyzing...', 'Checking for keybinding conflicts'])
+        
+        # Parse and detect conflicts
+        if self.conflict_detector.parse_config():
+            self.conflict_detector.detect_conflicts()
+            report = self.conflict_detector.generate_report()
+            
+            # Calculate summary
+            total_issues = sum(len(v) for k, v in self.conflict_detector.conflicts.items() 
+                             if k != 'unused_combinations')
+            
+            # Show notification summary
+            if total_issues == 0:
+                subprocess.run(['notify-send', '✅ No Conflicts', 'Your keybindings are conflict-free!'])
+            else:
+                subprocess.run(['notify-send', f'⚠️ {total_issues} Issues Found', 
+                              'Opening detailed report...'])
+            
+            # Save reports
+            self.conflict_detector.export_json()
+            text_path = Path.home() / '.config' / 'i3' / 'scripts' / 'conflict_report.txt'
+            with open(text_path, 'w') as f:
+                f.write(report)
+            
+            # Show report in launcher
+            launcher = self.find_launcher()
+            if launcher:
+                # Use rofi with larger window for report
+                if launcher[0] == 'rofi':
+                    report_launcher = [
+                        'rofi', '-dmenu', '-p', 'Conflict Report:', 
+                        '-theme-str', 'window { width: 80%; height: 70%; }',
+                        '-no-custom'
+                    ]
+                else:
+                    report_launcher = launcher
+                
+                process = subprocess.Popen(
+                    report_launcher,
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
+                
+                stdout, stderr = process.communicate(input=report)
+            
+            # Track analytics
+            self.track_search_term('conflict_check', 1)
+        else:
+            subprocess.run(['notify-send', 'Error', 'Could not parse i3 config'])
+    
+    def show_natural_language_prompt(self) -> None:
+        """Show natural language search interface"""
+        if not NATURAL_LANGUAGE_AVAILABLE:
+            subprocess.run(['notify-send', 'i3 Help', 'Natural language search not available'])
+            return
+        
+        # Initialize NL helper if needed
+        if not self.nl_help:
+            self.nl_help = NaturalLanguageHelp()
+        
+        launcher = self.find_launcher()
+        if not launcher:
+            subprocess.run(['notify-send', 'i3 Help', 'No launcher found'])
+            return
+        
+        # Create custom prompt with examples
+        if launcher[0] == 'rofi':
+            nl_launcher = [
+                'rofi', '-dmenu', '-p', '🤖 Ask me anything:',
+                '-theme-str', 'window { width: 60%; }',
+                '-lines', '0'
+            ]
+        else:
+            nl_launcher = launcher
+        
+        # Show example queries as hint
+        examples = [
+            "Examples:",
+            "• How do I make the window bigger?",
+            "• Move this to the other screen",
+            "• Open a new terminal",
+            "• Lock my computer",
+            "• Take a screenshot",
+            "• Switch to workspace 3",
+            "",
+            "Type your question:"
+        ]
+        
+        process = subprocess.Popen(
+            nl_launcher,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        
+        stdout, stderr = process.communicate(input='\n'.join(examples))
+        
+        if process.returncode == 0 and stdout.strip():
+            query = stdout.strip()
+            
+            # Skip if user selected an example line
+            if query.startswith('•') or query == 'Examples:' or query == 'Type your question:':
+                return
+            
+            # Process the natural language query
+            results = self.nl_help.process_query(query, self.bindings)
+            
+            # Track the search
+            self.track_search_term(query, len(results['results']))
+            
+            # Format results for display
+            display_lines = []
+            display_lines.append(f"🤖 Understanding: {results['interpretation']}")
+            display_lines.append("=" * 60)
+            display_lines.append("")
+            
+            if results['results']:
+                display_lines.append(f"📊 Found {len(results['results'])} matching keybindings:")
+                display_lines.append("-" * 50)
+                
+                for binding, score in results['results'][:15]:
+                    relevance = "⭐" * min(5, int(score / 10))
+                    key_part = f"[{binding['key']}]".ljust(25)
+                    desc_part = binding['description'][:40].ljust(40)
+                    display_lines.append(f"{relevance} {key_part} {desc_part}")
+                
+                display_lines.append("")
+                display_lines.append("Select a binding to see actions, or ESC to cancel")
+            else:
+                display_lines.append("❌ No matching keybindings found.")
+                display_lines.append("")
+            
+            if results['suggestions']:
+                display_lines.append("")
+                display_lines.append("💡 Try these queries instead:")
+                for suggestion in results['suggestions'][:5]:
+                    display_lines.append(f"  • {suggestion}")
+            
+            # Show results
+            if launcher[0] == 'rofi':
+                result_launcher = [
+                    'rofi', '-dmenu', '-p', f'Results for: {query}',
+                    '-theme-str', 'window { width: 70%; } listview { lines: 20; }'
+                ]
+            else:
+                result_launcher = launcher
+            
+            result_process = subprocess.Popen(
+                result_launcher,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            
+            display_text = '\n'.join(display_lines)
+            result_stdout, _ = result_process.communicate(input=display_text)
+            
+            # If a binding was selected, show action menu
+            if result_process.returncode == 0 and result_stdout.strip():
+                selected_line = result_stdout.strip()
+                binding = self.find_binding_by_display(selected_line)
+                if binding:
+                    self.show_action_menu(binding)
+    
+    def is_natural_language_query(self, query: str) -> bool:
+        """Detect if query is natural language"""
+        # Natural language indicators
+        nl_indicators = [
+            'how', 'what', 'where', 'when', 'why',
+            'make', 'change', 'resize', 'move',
+            'open', 'close', 'launch', 'start',
+            'do i', 'can i', 'to the', 'this'
+        ]
+        
+        query_lower = query.lower()
+        
+        # Check for question marks or multiple words suggesting natural language
+        if '?' in query or len(query.split()) > 3:
+            return True
+        
+        # Check for natural language indicators
+        return any(indicator in query_lower for indicator in nl_indicators)
 
     def show_help(self):
         """Display help using available launcher with action execution"""
@@ -1273,8 +1526,111 @@ class I3KeybindingHelper:
             subprocess.run(['notify-send', 'i3 Help Error', str(e)])
 
 def main():
+    import argparse
+    
+    # Set up argument parser
+    parser = argparse.ArgumentParser(
+        description='i3 Keybinding Help System - Enhanced with conflict detection and natural language search',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog='''
+Examples:
+  i3-help.py                    # Show interactive keybinding help
+  i3-help.py --conflicts        # Check for keybinding conflicts
+  i3-help.py --natural          # Use natural language search
+  i3-help.py --search "volume"  # Search for specific bindings
+        '''
+    )
+    
+    parser.add_argument(
+        '--conflicts', '-c',
+        action='store_true',
+        help='Check for keybinding conflicts and show report'
+    )
+    
+    parser.add_argument(
+        '--natural', '-n',
+        action='store_true',
+        help='Open natural language search interface'
+    )
+    
+    parser.add_argument(
+        '--search', '-s',
+        type=str,
+        metavar='QUERY',
+        help='Search for keybindings matching the query'
+    )
+    
+    args = parser.parse_args()
+    
+    # Create helper instance
     helper = I3KeybindingHelper()
-    helper.show_help()
+    
+    # Handle different modes
+    if args.conflicts:
+        # Ensure config is parsed
+        if helper.parse_config():
+            helper.show_conflict_report()
+        else:
+            print("Error: Could not parse i3 config file", file=sys.stderr)
+            sys.exit(1)
+    elif args.natural:
+        # Ensure config is parsed
+        if helper.parse_config():
+            helper.show_natural_language_prompt()
+        else:
+            print("Error: Could not parse i3 config file", file=sys.stderr)
+            sys.exit(1)
+    elif args.search:
+        # Ensure config is parsed
+        if helper.parse_config():
+            # Check if it's a natural language query
+            if helper.is_natural_language_query(args.search) and NATURAL_LANGUAGE_AVAILABLE:
+                # Initialize NL helper if needed
+                if not helper.nl_help:
+                    helper.nl_help = NaturalLanguageHelp()
+                
+                # Process query
+                results = helper.nl_help.process_query(args.search, helper.bindings)
+                
+                # Print results to stdout
+                print(f"Query: {args.search}")
+                print(f"Understanding: {results['interpretation']}")
+                print()
+                
+                if results['results']:
+                    print(f"Found {len(results['results'])} matches:")
+                    for binding, score in results['results'][:10]:
+                        print(f"  [{binding['key']}] {binding['description']} (score: {score:.1f})")
+                else:
+                    print("No matches found.")
+                
+                if results['suggestions']:
+                    print("\nSuggestions:")
+                    for suggestion in results['suggestions']:
+                        print(f"  • {suggestion}")
+            else:
+                # Traditional search
+                query_lower = args.search.lower()
+                matches = []
+                
+                for binding in helper.bindings:
+                    if query_lower in binding['search_text'].lower() or \
+                       query_lower in binding['description'].lower() or \
+                       query_lower in binding['key'].lower():
+                        matches.append(binding)
+                
+                if matches:
+                    print(f"Found {len(matches)} matches for '{args.search}':")
+                    for binding in matches[:20]:
+                        print(f"  [{binding['key']}] {binding['description']}")
+                else:
+                    print(f"No matches found for '{args.search}'")
+        else:
+            print("Error: Could not parse i3 config file", file=sys.stderr)
+            sys.exit(1)
+    else:
+        # Default: show interactive help
+        helper.show_help()
 
 if __name__ == '__main__':
     main()
