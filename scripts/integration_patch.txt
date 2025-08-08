@@ -1,0 +1,151 @@
+
+# Integration Patch for i3-help.py
+# Apply these changes to add conflict detection and natural language search
+
+## 1. Add imports at the top of i3-help.py:
+
+from conflict_detector import KeybindingConflictDetector
+from natural_language_search import NaturalLanguageHelp
+
+## 2. In __init__ method, add:
+
+self.conflict_detector = None  # Will be initialized on demand
+self.nl_help = None  # Will be initialized on demand
+
+## 3. Add to the action menu (in show_action_menu method):
+
+# Add before the Cancel option:
+actions.insert(-1, "🔍 Check for Conflicts")
+actions.insert(-1, "🤖 Natural Language Help")
+
+# In the action handler section, add:
+elif "Check for Conflicts" in selected_action:
+    self.show_conflict_report()
+elif "Natural Language Help" in selected_action:
+    self.show_natural_language_prompt()
+
+## 4. Add these new methods to the I3KeybindingHelper class:
+
+def show_conflict_report(self):
+    '''Show keybinding conflict analysis'''
+    if not self.conflict_detector:
+        self.conflict_detector = KeybindingConflictDetector()
+    
+    subprocess.run(['notify-send', 'Analyzing...', 'Checking for conflicts'])
+    
+    if self.conflict_detector.parse_config():
+        self.conflict_detector.detect_conflicts()
+        report = self.conflict_detector.generate_report()
+        
+        # Show summary notification
+        total_issues = sum(len(v) for k, v in self.conflict_detector.conflicts.items() 
+                          if k != 'unused_combinations')
+        
+        if total_issues == 0:
+            subprocess.run(['notify-send', '✅ No Conflicts', 'Your keybindings are conflict-free!'])
+        else:
+            subprocess.run(['notify-send', f'⚠️ {total_issues} Issues Found', 
+                          'Check the detailed report'])
+        
+        # Save reports
+        self.conflict_detector.export_json()
+        text_path = Path.home() / '.config' / 'i3' / 'scripts' / 'conflict_report.txt'
+        with open(text_path, 'w') as f:
+            f.write(report)
+        
+        # Open report in preferred editor or viewer
+        subprocess.run(['xdg-open', str(text_path)])
+
+def show_natural_language_prompt(self):
+    '''Show natural language search interface'''
+    if not self.nl_help:
+        self.nl_help = NaturalLanguageHelp()
+    
+    launcher = self.find_launcher()
+    if not launcher:
+        return
+    
+    # Create custom prompt
+    if launcher[0] == 'rofi':
+        nl_launcher = [
+            'rofi', '-dmenu', '-p', '🤖 Ask me anything:',
+            '-theme-str', 'window { width: 50%; }',
+            '-lines', '0'
+        ]
+    else:
+        nl_launcher = launcher
+    
+    # Example queries
+    examples = [
+        "Examples:",
+        "• How do I make the window bigger?",
+        "• Move this to the other screen",
+        "• Open a new terminal",
+        "• Lock my computer",
+        "• Take a screenshot",
+        "",
+        "Type your question:"
+    ]
+    
+    process = subprocess.Popen(
+        nl_launcher,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+    
+    stdout, stderr = process.communicate(input='\n'.join(examples))
+    
+    if process.returncode == 0 and stdout.strip():
+        query = stdout.strip()
+        results = self.nl_help.process_query(query, self.bindings)
+        
+        # Show formatted results
+        display_text = self.nl_help.format_results(results)
+        
+        # Display in rofi
+        if launcher[0] == 'rofi':
+            result_launcher = [
+                'rofi', '-dmenu', '-p', 'Results:',
+                '-theme-str', 'window { width: 70%; } listview { lines: 20; }'
+            ]
+        else:
+            result_launcher = launcher
+        
+        result_process = subprocess.Popen(
+            result_launcher,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        
+        result_stdout, _ = result_process.communicate(input=display_text)
+        
+        # If a binding was selected, show action menu
+        if result_process.returncode == 0 and result_stdout.strip():
+            selected_line = result_stdout.strip()
+            # Extract key from selected line
+            if '[' in selected_line and ']' in selected_line:
+                binding = self.find_binding_by_display(selected_line)
+                if binding:
+                    self.show_action_menu(binding)
+
+## 5. Optional: Add keybindings to i3 config:
+
+# Check for conflicts
+bindsym $mod+Alt+c exec python3 ~/.config/i3/scripts/i3-help.py --conflicts
+
+# Natural language help
+bindsym $mod+Alt+n exec python3 ~/.config/i3/scripts/i3-help.py --natural
+
+## 6. Add command line argument handling (in main function):
+
+if len(sys.argv) > 1:
+    if '--conflicts' in sys.argv:
+        helper.show_conflict_report()
+        return
+    elif '--natural' in sys.argv:
+        helper.show_natural_language_prompt()
+        return

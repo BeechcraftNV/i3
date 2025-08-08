@@ -1,0 +1,89 @@
+======================================================================
+🔍 I3 KEYBINDING CONFLICT ANALYSIS REPORT
+======================================================================
+
+📊 Summary:
+  Total bindings analyzed: 128
+  Modes detected: 2
+  Total issues found: 16
+
+🟠 SYSTEM CONFLICTS (1 found):
+--------------------------------------------------
+
+  ⚠️  'Print' conflicts with System screenshot
+     Line 291: exec --no-startup-id ~/.config/i3/script...
+  💡 Fix: Consider using a different binding
+
+🟡 MODE CONFLICTS (1 found):
+--------------------------------------------------
+
+  ⚠️  Mode 'resize' overrides '$mod+r'
+     Default: mode "resize"...
+     Mode: mode "default"...
+
+🟢 ERGONOMIC ISSUES (11 found):
+--------------------------------------------------
+
+  😰 '$mod+Shift+1': Shift+number keys are error-prone
+     Command: move container to workspace $ws1...
+  💡 Suggestion: $mod+Alt+1
+
+  😰 '$mod+Shift+2': Shift+number keys are error-prone
+     Command: move container to workspace $ws2...
+  💡 Suggestion: $mod+Alt+2
+
+  😰 '$mod+Shift+3': Shift+number keys are error-prone
+     Command: move container to workspace $ws3...
+  💡 Suggestion: $mod+Alt+3
+
+  😰 '$mod+Shift+4': Shift+number keys are error-prone
+     Command: move container to workspace $ws4...
+  💡 Suggestion: $mod+Alt+4
+
+  😰 '$mod+Shift+5': Shift+number keys are error-prone
+     Command: move container to workspace $ws5...
+  💡 Suggestion: $mod+Alt+5
+
+🔵 SIMILAR BINDINGS (3 found):
+--------------------------------------------------
+
+  👀 '$mod+l' ↔ '$mod+1'
+     '$mod+l' and '$mod+1' are visually similar
+
+  👀 '$mod+Shift+l' ↔ '$mod+Shift+1'
+     '$mod+Shift+l' and '$mod+Shift+1' are visually similar
+
+  👀 '$mod+b' ↔ '$mod+d'
+     '$mod+b' and '$mod+d' are visually similar
+
+💚 SUGGESTED UNUSED COMBINATIONS (top 10):
+--------------------------------------------------
+  ✅ $mod+g               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: go to/grep
+  ✅ $mod+q               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: quit
+  ✅ $mod+t               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: terminal/tab
+  ✅ $mod+y               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: yank/yes
+  ✅ $mod+u               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: undo
+  ✅ $mod+i               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: insert/info
+  ✅ $mod+o               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: open
+  ✅ $mod+z               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: undo/zoom
+  ✅ $mod+x               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: cut/execute
+  ✅ $mod+n               ▰▰▰▰▰▰▰▰▰▰ Score: 100/100
+     Suggested use: new/next
+
+======================================================================
+📋 RECOMMENDATIONS:
+--------------------------------------------------
+  2. Review system conflicts to avoid unexpected behavior
+  4. Improve ergonomics for frequently used commands
+  5. Consider using some of the suggested unused combinations
+
+======================================================================
