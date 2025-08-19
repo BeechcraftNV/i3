@@ -1,10 +1,12 @@
 # i3 Window Manager Configuration
 
-This configuration has been set up for dual monitor usage with the following features:
+Intelligent i3 configuration featuring AI-enhanced help system, multi-monitor support, and comprehensive printer management.
 
-## Installation
+![i3 Status](https://img.shields.io/badge/i3wm-Enhanced-blue?style=for-the-badge&logo=i3wm)
+![Scripts](https://img.shields.io/badge/Scripts-25+-green?style=for-the-badge)
+![AI Help](https://img.shields.io/badge/AI-Help_System-orange?style=for-the-badge)
 
-To install this i3 configuration on a new system:
+## 🚀 Quick Installation
 
 ### Using SSH (recommended):
 ```bash
@@ -44,17 +46,36 @@ After installation, restart i3 with `Super+Shift+r` or log out and log back in.
 - Workspaces 3,5,7,9: HDMI-1
 - Workspaces 4,6,8,10: HDMI-2
 
-## Key Bindings
-- `Mod1` = Alt key (default i3 modifier)
-- `Mod1+Return`: Open terminal
-- `Mod1+d`: Application launcher (dmenu)
-- `Mod1+Shift+q`: Close window
-- `Mod1+Shift+f`: Open file manager
-- `Mod1+Shift+x`: Lock screen
-- `Print`: Screenshot
-- `Shift+Print`: Select area screenshot
-- `Mod1+1-0`: Switch to workspace 1-10
-- `Mod1+Shift+1-0`: Move window to workspace 1-10
+## 🎯 Key Bindings Overview
+
+**Modifier Key**: `$mod` = `Super` key (Windows key) - **Not Alt!**
+
+### Essential Shortcuts
+- `Super+Return`: Open terminal (Warp/i3-sensible-terminal)
+- `Super+d`: Application launcher (rofi)
+- `Super+Shift+q`: Close window
+- `Super+Shift+f`: Open file manager
+- `Super+Shift+x`: Lock screen
+- `Super+1-0`: Switch to workspace 1-10
+- `Super+Shift+1-0`: Move window to workspace 1-10
+
+### Screenshots
+- `Print`: Full screen screenshot (active monitor)
+- `Super+Print`: Interactive GUI screenshot (Flameshot)
+- `Shift+Print`: Active window screenshot
+- `Ctrl+Print`: Interactive selection screenshot
+- `Alt+Print`: Full screen to clipboard
+
+### Printer Management
+- `Super+Ctrl+p`: Printer manager menu (rofi)
+- `Super+Shift+Ctrl+p`: Open printer configuration GUI
+- `Super+Alt+p`: Print test page
+
+### AI Help System
+- `Super+Alt+h`: Launch intelligent keybinding browser
+- `Super+Alt+c`: Check for keybinding conflicts
+- `Super+Alt+n`: Natural language help interface
+- `Super+F1`: Show keybinding documentation
 
 ## Keybinding Documentation
 
@@ -91,22 +112,77 @@ These files are regenerated on demand and are not tracked in version control.
 - NetworkManager applet
 - XSS lock for screen locking
 
+## 🖨️ Printer Management System
+
+This configuration includes a comprehensive printer management system with status bar integration.
+
+### Features
+- **Real-time status display** in i3blocks status bar
+- **Interactive printer manager menu** via rofi
+- **GUI printer configuration tools**
+- **Automatic printer queue detection**
+- **Test page printing**
+- **Queue management (view/clear)**
+
+### Status Bar Integration
+The status bar shows printer status in real-time:
+- **🖨️ READY** - Printer idle and available
+- **🖨️ PRINTING** - Currently printing
+- **🖨️ QUEUE(n)** - n jobs in print queue
+- **🖨️ OFFLINE** - Printer unavailable
+
+### Supported Printers
+Currently configured for:
+- **Brother DCP-L2550DW** (Primary)
+- **HP ENVY Inspire 7900** (Secondary)
+
+### GUI Tools Available
+- **system-config-printer** - Full-featured printer management
+- **GNOME Control Center** - Modern printer settings
+- **CUPS Web Interface** - Browser-based management (http://localhost:631)
+
+### Printer Scripts
+- `scripts/printer-status.sh` - Status bar integration
+- `scripts/printer-manager.sh` - Interactive management menu
+
+### Installation Requirements
+```bash
+# Install printer GUI tools
+sudo apt install system-config-printer gnome-control-center
+
+# Ensure CUPS is running
+sudo systemctl enable --now cups
+```
+
+### Usage
+1. **Status Bar**: Shows current printer status automatically
+2. **Quick Menu**: `Super+Ctrl+p` → Select action from rofi menu
+3. **GUI Config**: `Super+Shift+Ctrl+p` → Opens system-config-printer
+4. **Test Print**: `Super+Alt+p` → Prints test page immediately
+
 ## Configuration Files
-- Main config: `~/.config/i3/config`
-- Status bar: `~/.config/i3status/config`
+- **Main config**: `~/.config/i3/config`
+- **Status bar**: `~/.config/i3/i3blocks.conf` (not i3status!)
+- **Printer scripts**: `~/.config/i3/scripts/printer-*.sh`
 
 ## Optional Packages for Full Functionality
-To install optional packages for screenshots, file manager, and wallpapers:
 ```bash
-sudo pacman -S scrot thunar feh picom
+# Core functionality
+sudo apt install i3 i3blocks feh picom xss-lock i3lock rofi flameshot
+
+# Printer management
+sudo apt install cups system-config-printer gnome-control-center
+
+# File manager and extras
+sudo apt install thunar network-manager-gnome
 ```
 
 ## Setting a Wallpaper
 Place your desired wallpaper as `~/.config/i3/wallpaper.jpg` or modify the feh command in the i3 config.
 
 ## Reloading Configuration
-- `Mod1+Shift+c`: Reload i3 configuration
-- `Mod1+Shift+r`: Restart i3 in place
+- `Super+Shift+c`: Reload i3 configuration
+- `Super+Shift+r`: Restart i3 in place
 
 ---
 
