@@ -194,6 +194,7 @@ bindsym $mod+Shift+b exec brave || firefox
 bindsym $mod+Shift+t exec warp-terminal || i3-sensible-terminal
 bindsym $mod+Shift+m exec blueman-manager || true
 bindsym $mod+Shift+f exec "command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~"
+bindsym $mod+o exec --no-startup-id oscar
 
 # Monitor configuration hotkey
 bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh
@@ -293,10 +294,12 @@ bindsym Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh full
 bindsym $mod+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh gui
 # Shift+Print - Active window screenshot
 bindsym Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh window
-# Ctrl+Print - Quick selection to clipboard only
-bindsym Ctrl+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh clipboard
+# Ctrl+Print - Interactive selection (saves to disk + clipboard)
+bindsym Ctrl+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh selection
 # Ctrl+Shift+Print - Open Flameshot config
 bindsym Ctrl+Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh config
+# Alt+Print - Full screen to clipboard (no file save)
+bindsym Mod1+Print exec --no-startup-id flameshot full --clipboard
 
 # Lock screen (with fallback)
 bindsym $mod+shift+x exec i3lock-fancy || i3lock -c 000000

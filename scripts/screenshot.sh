@@ -31,30 +31,35 @@ case "$1" in
         ;;
     
     "window")
-        # Active window screenshot
+        # Active window screenshot - saves to disk AND copies to clipboard
         # Check if we have xdotool and try to get active window
         if command -v xdotool >/dev/null 2>&1; then
             WINDOW_ID=$(xdotool getactivewindow 2>/dev/null)
             if [ -n "$WINDOW_ID" ]; then
                 # Use maim to capture the specific window (more reliable than Flameshot for this)
                 if command -v maim >/dev/null 2>&1; then
-                    maim --window="$WINDOW_ID" "$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
-                    # Also copy to clipboard
-                    maim --window="$WINDOW_ID" | xclip -selection clipboard -t image/png
-                    notify-send "Screenshot" "Active window captured and copied to clipboard"
+                    FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+                    # Save to disk
+                    maim --window="$WINDOW_ID" "$FILEPATH"
+                    # Copy to clipboard
+                    cat "$FILEPATH" | xclip -selection clipboard -t image/png
+                    notify-send "Screenshot" "Window captured → saved to disk and copied to clipboard"
                 else
                     # Fallback to Flameshot GUI if maim not available
-                    notify-send "Screenshot" "Select the active window"
-                    flameshot gui --path="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+                    notify-send "Screenshot" "Select the active window (will save to disk and clipboard)"
+                    FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+                    flameshot gui --path="$FILEPATH" --clipboard
                 fi
             else
                 notify-send "Screenshot" "No active window found, please select manually"
-                flameshot gui --path="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+                FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+                flameshot gui --path="$FILEPATH" --clipboard
             fi
         else
-            # No xdotool, fallback to manual selection
-            notify-send "Screenshot" "Select the window you want to capture"
-            flameshot gui --path="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+            # No xdotool, fallback to manual selection  
+            notify-send "Screenshot" "Select the window to capture (will save to disk and clipboard)"
+            FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+            flameshot gui --path="$FILEPATH" --clipboard
         fi
         ;;
     

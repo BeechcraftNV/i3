@@ -3,7 +3,7 @@
 # i3 Printer Management Script
 # Provides comprehensive printer management for Manjaro i3 setup
 
-PRINTER_NAME="DCP-L2550DW"
+PRINTER_NAME="Brother_DCP_L2550DW_series_3c2af49f7385"
 CUPS_WEB="http://localhost:631"
 
 show_help() {

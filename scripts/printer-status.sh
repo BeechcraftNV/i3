@@ -3,7 +3,7 @@
 # i3blocks Printer Status Script
 # Shows printer status in the status bar
 
-PRINTER_NAME="DCP-L2550DW"
+PRINTER_NAME="Brother_DCP_L2550DW_series_3c2af49f7385"
 
 # Check if printer is available
 if ! lpstat -p "$PRINTER_NAME" >/dev/null 2>&1; then

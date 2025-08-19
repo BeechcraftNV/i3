@@ -2,9 +2,9 @@
 <style>body{font-family:monospace;background:#2f343f;color:#f3f4f5;padding:20px;}
 h2{color:#4c7899;} .key{color:#50fa7b;font-weight:bold;}</style></head><body>
 <h1>🔧 i3 Keybinding Reference</h1>
-<p>Generated: Sun Jul  6 06:09:16 AM PDT 2025</p>
+<p>Generated: Fri Aug 15 09:05:33 AM PDT 2025</p>
 ==================== i3 KEYBINDING REFERENCE ====================
-Generated: Sun Jul  6 06:09:16 AM PDT 2025
+Generated: Fri Aug 15 09:05:33 AM PDT 2025
 ==================================================================
 
 <h2>🪟 Window Management</h2><pre>
@@ -73,7 +73,6 @@ Generated: Sun Jul  6 06:09:16 AM PDT 2025
   $mod+Shift+b         → exec brave || firefox
   $mod+Shift+t         → exec warp-terminal || i3-sensible-terminal
   $mod+Shift+f         → exec "command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~"
-  $mod+Ctrl+p          → "rofi -dmenu -p 'Print:' <<< $'Print Test Page\nPrint Queue Status\nClear Print Queue\nCUPS Web Interface' | while read choice; do case '$choice' in 'Print Test Page') lp -d DCP-L2550DW /usr/share/cups/data/testprint && notify-send 'Print' 'Test page sent to printer' ;; 'Print Queue Status') notify-send 'Print Queue' \"$(lpq -P DCP-L2550DW)\" ;; 'Clear Print Queue') cancel -a DCP-L2550DW && notify-send 'Print' 'Queue cleared' ;; 'CUPS Web Interface') xdg-open http://localhost:631 ;; esac; done"
 
 </pre><h2>⚙️ System Controls</h2><pre>
   XF86AudioRaiseVolume → exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
