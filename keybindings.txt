@@ -1,5 +1,5 @@
 ==================== i3 KEYBINDING REFERENCE ====================
-Generated: Thu Aug 28 08:08:22 AM PDT 2025
+Generated: Thu Aug 28 11:21:18 AM PDT 2025
 ==================================================================
 
 🪟 WINDOW MANAGEMENT:
@@ -59,13 +59,13 @@ Generated: Thu Aug 28 08:08:22 AM PDT 2025
   $mod+Ctrl+Left       → workspace prev
   $mod+Tab             → workspace next
   $mod+Shift+Tab       → workspace prev
+  $mod+Alt+0           → exec --no-startup-id i3-msg 'workspace "10:AI"; exec $browser'
   $mod+Shift+w         → exec --no-startup-id i3-save-tree --workspace current > ~/.config/i3/workspace-$(date +%Y%m%d_%H%M%S).json
 
 🚀 APPLICATION LAUNCHERS:
   $mod+Return          → warp-terminal || i3-sensible-terminal
   $mod+Shift+Return    → i3-msg 'exec warp-terminal || i3-sensible-terminal; [class=".*"] move scratchpad'
   $mod+d               → "command -v rofi > /dev/null && rofi -show drun -show-icons || dmenu_run"
-  $mod+Shift+b         → exec brave || firefox
   $mod+Shift+t         → exec warp-terminal || i3-sensible-terminal
   $mod+Shift+f         → exec "command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~"
 

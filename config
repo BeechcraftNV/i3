@@ -16,6 +16,9 @@ set $mod Mod4
 # Improved font with better readability
 font pango:DejaVu Sans Mono 10
 
+# Default browser launcher used throughout config
+set $browser ~/.config/i3/scripts/open-browser.sh
+
 # Focus follows mouse
 focus_follows_mouse no
 
@@ -162,12 +165,12 @@ exec --no-startup-id i3-msg "workspace $ws1; workspace $ws2; workspace $ws1"
 
 # Start applications on specific workspaces (with delays for proper assignment)
 exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"$ws1\"; exec warp-terminal || i3-sensible-terminal'"
-exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"$ws2\"; exec brave || firefox'"
+exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"$ws2\"; exec $browser'"
 exec --no-startup-id sh -c "sleep 3 && command -v code > /dev/null && i3-msg 'workspace \"$ws3\"; exec code' || true"
 exec --no-startup-id sh -c "sleep 3 && command -v thunar > /dev/null && i3-msg 'workspace \\\"$ws4\\\"; exec thunar' || true"
 
 # Launch an extra Brave/Firefox window in workspace 10 for AI tools
-exec --no-startup-id sh -c "sleep 4 && i3-msg 'workspace \"$ws10\"; exec brave || firefox'"
+exec --no-startup-id sh -c "sleep 4 && i3-msg 'workspace \"$ws10\"; exec $browser'"
 
 # ============================================================================
 # KEY BINDINGS - BASIC CONTROLS
@@ -195,13 +198,13 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec --no-startup-id "command -v rofi > /dev/null && rofi -show drun -show-icons || dmenu_run"
 
 # Quick application launchers (with fallbacks)
-bindsym $mod+Shift+b exec brave || firefox
+bindsym $mod+Shift+b exec $browser
 bindsym $mod+Shift+t exec warp-terminal || i3-sensible-terminal
 bindsym $mod+Shift+m exec blueman-manager || true
 bindsym $mod+Shift+f exec "command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~"
 
 # Launch browser directly in workspace 10:AI
-bindsym $mod+Alt+0 exec --no-startup-id i3-msg 'workspace "10:AI"; exec brave || firefox'
+bindsym $mod+Alt+0 exec --no-startup-id i3-msg 'workspace "10:AI"; exec $browser'
 
 # Monitor configuration hotkey
 bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh
