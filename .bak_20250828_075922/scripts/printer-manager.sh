@@ -3,31 +3,8 @@
 # i3 Printer Management Script
 # Provides comprehensive printer management for Manjaro i3 setup
 
-# Prefer system default printer; allow override via env PRINTER_NAME
+PRINTER_NAME="Brother_DCP_L2550DW_series_3c2af49f7385"
 CUPS_WEB="http://localhost:631"
-
-get_printer_name() {
-  # If env provided, use it
-  if [[ -n "${PRINTER_NAME:-}" ]]; then echo "$PRINTER_NAME"; return; fi
-  # System default
-  local def
-  def=$(lpstat -d 2>/dev/null | awk -F': ' '{print $2}')
-  if [[ -n "$def" ]]; then echo "$def"; return; fi
-  # List printers
-  local list
-  list=$(lpstat -p 2>/dev/null | awk '{print $2}' | sort -u)
-  if [[ -z "$list" ]]; then echo ""; return; fi
-  local count
-  count=$(echo "$list" | wc -l)
-  if [[ "$count" -eq 1 ]]; then echo "$list"; return; fi
-  if command -v rofi >/dev/null 2>&1; then
-    local choice
-    choice=$(echo "$list" | rofi -dmenu -i -p "Select printer:")
-    echo "$choice"
-    return
-  fi
-  echo "$(echo "$list" | head -1)"
-}
 
 show_help() {
     cat << EOF
@@ -53,20 +30,16 @@ send_notification() {
 }
 
 print_test_page() {
-    local PRN="${PRINTER_NAME:-$(get_printer_name)}"
-    if [[ -z "$PRN" ]]; then send_notification "No printers found"; return; fi
-    if lp -d "$PRN" /usr/share/cups/data/testprint 2>/dev/null; then
-        send_notification "Test page sent to $PRN"
+    if lp -d "$PRINTER_NAME" /usr/share/cups/data/testprint 2>/dev/null; then
+        send_notification "Test page sent to $PRINTER_NAME"
     else
         send_notification "Failed to send test page"
     fi
 }
 
 show_status() {
-    local PRN="${PRINTER_NAME:-$(get_printer_name)}"
-    if [[ -z "$PRN" ]]; then send_notification "No printers found"; return; fi
-    local status=$(lpstat -p "$PRN" 2>/dev/null | head -1)
-    local queue=$(lpq -P "$PRN" 2>/dev/null | tail -n +2)
+    local status=$(lpstat -p "$PRINTER_NAME" 2>/dev/null | head -1)
+    local queue=$(lpq -P "$PRINTER_NAME" 2>/dev/null | tail -n +2)
     
     if [ -n "$status" ]; then
         if [ -n "$queue" ]; then
@@ -80,9 +53,7 @@ show_status() {
 }
 
 show_queue() {
-    local PRN="${PRINTER_NAME:-$(get_printer_name)}"
-    if [[ -z "$PRN" ]]; then send_notification "No printers found"; return; fi
-    local queue=$(lpq -P "$PRN" 2>/dev/null | tail -n +2)
+    local queue=$(lpq -P "$PRINTER_NAME" 2>/dev/null | tail -n +2)
     if [ -n "$queue" ]; then
         send_notification "Print Queue:\n$queue"
     else
@@ -91,9 +62,7 @@ show_queue() {
 }
 
 clear_queue() {
-    local PRN="${PRINTER_NAME:-$(get_printer_name)}"
-    if [[ -z "$PRN" ]]; then send_notification "No printers found"; return; fi
-    if cancel -a "$PRN" 2>/dev/null; then
+    if cancel -a "$PRINTER_NAME" 2>/dev/null; then
         send_notification "Print queue cleared"
     else
         send_notification "Failed to clear print queue or queue already empty"

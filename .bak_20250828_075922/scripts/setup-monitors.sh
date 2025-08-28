@@ -63,6 +63,23 @@ setup_wallpaper() {
     fi
 }
 
+# Function to restart compositor
+restart_compositor() {
+    log "Managing compositor..."
+    if pgrep picom >/dev/null; then
+        log "Restarting picom..."
+        killall picom 2>/dev/null || true
+        sleep 0.5
+        if picom -b 2>/dev/null; then
+            log "Picom restarted successfully"
+        else
+            log "Failed to restart picom"
+        fi
+    else
+        log "Picom not running, attempting to start..."
+        picom -b 2>/dev/null && log "Picom started" || log "Failed to start picom"
+    fi
+}
 
 # Main display configuration logic
 case "$CONNECTED_COUNT" in
@@ -157,8 +174,9 @@ esac
 log "Waiting for displays to initialize..."
 sleep 2
 
-# Apply wallpaper
+# Apply wallpaper and restart compositor
 setup_wallpaper
+restart_compositor
 
 # Notify i3 to refresh (if available)
 if command -v i3-msg >/dev/null 2>&1; then

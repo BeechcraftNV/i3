@@ -1,0 +1,1650 @@
+{
+  "summary": {
+    "total_bindings": 128,
+    "total_modes": 2,
+    "conflicts": {
+      "duplicates": 0,
+      "shadows": 0,
+      "similar": 3,
+      "mode_conflicts": 1,
+      "system_conflicts": 1,
+      "ergonomic_issues": 11,
+      "unused_combinations": 10
+    }
+  },
+  "conflicts": {
+    "duplicates": [],
+    "shadows": [],
+    "similar": [
+      {
+        "binding1": {
+          "type": "bindsym",
+          "key": "$mod+l",
+          "normalized_key": "mod4+l",
+          "command": "focus right",
+          "line": 221,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+l focus right"
+        },
+        "binding2": {
+          "type": "bindsym",
+          "key": "$mod+1",
+          "normalized_key": "mod4+1",
+          "command": "workspace $ws1",
+          "line": 86,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+1 workspace $ws1"
+        },
+        "severity": "low",
+        "description": "'$mod+l' and '$mod+1' are visually similar"
+      },
+      {
+        "binding1": {
+          "type": "bindsym",
+          "key": "$mod+Shift+l",
+          "normalized_key": "mod4+shift+l",
+          "command": "move right",
+          "line": 233,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+l move right"
+        },
+        "binding2": {
+          "type": "bindsym",
+          "key": "$mod+Shift+1",
+          "normalized_key": "mod4+shift+1",
+          "command": "move container to workspace $ws1",
+          "line": 98,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+1 move container to workspace $ws1"
+        },
+        "severity": "low",
+        "description": "'$mod+Shift+l' and '$mod+Shift+1' are visually similar"
+      },
+      {
+        "binding1": {
+          "type": "bindsym",
+          "key": "$mod+b",
+          "normalized_key": "mod4+b",
+          "command": "split h",
+          "line": 242,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+b split h"
+        },
+        "binding2": {
+          "type": "bindsym",
+          "key": "$mod+d",
+          "normalized_key": "mod4+d",
+          "command": "exec --no-startup-id \"command -v rofi > /dev/null && rofi -show drun -show-icons || dmenu_run\"",
+          "line": 190,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+d exec --no-startup-id \"command -v rofi > /dev/null && rofi -show drun -show-icons || dmenu_run\""
+        },
+        "severity": "low",
+        "description": "'$mod+b' and '$mod+d' are visually similar"
+      }
+    ],
+    "mode_conflicts": [
+      {
+        "mode": "resize",
+        "mode_binding": {
+          "type": "bindsym",
+          "key": "$mod+r",
+          "normalized_key": "mod4+r",
+          "command": "mode \"default\"",
+          "line": 410,
+          "mode": "resize",
+          "modifiers": "",
+          "original_line": "bindsym $mod+r mode \"default\""
+        },
+        "default_binding": {
+          "type": "bindsym",
+          "key": "$mod+r",
+          "normalized_key": "mod4+r",
+          "command": "mode \"resize\"",
+          "line": 412,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+r mode \"resize\""
+        },
+        "severity": "medium",
+        "description": "Mode 'resize' overrides default binding '$mod+r'"
+      }
+    ],
+    "system_conflicts": [
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "Print",
+          "normalized_key": "print",
+          "command": "exec --no-startup-id ~/.config/i3/scripts/screenshot.sh full",
+          "line": 291,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh full"
+        },
+        "system_key": "Print",
+        "system_function": "System screenshot",
+        "severity": "medium",
+        "description": "'Print' conflicts with system shortcut for System screenshot"
+      }
+    ],
+    "ergonomic_issues": [
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+1",
+          "normalized_key": "mod4+shift+1",
+          "command": "move container to workspace $ws1",
+          "line": 98,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+1 move container to workspace $ws1"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+1' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+1"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+2",
+          "normalized_key": "mod4+shift+2",
+          "command": "move container to workspace $ws2",
+          "line": 99,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+2 move container to workspace $ws2"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+2' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+2"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+3",
+          "normalized_key": "mod4+shift+3",
+          "command": "move container to workspace $ws3",
+          "line": 100,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+3 move container to workspace $ws3"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+3' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+3"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+4",
+          "normalized_key": "mod4+shift+4",
+          "command": "move container to workspace $ws4",
+          "line": 101,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+4 move container to workspace $ws4"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+4' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+4"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+5",
+          "normalized_key": "mod4+shift+5",
+          "command": "move container to workspace $ws5",
+          "line": 102,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+5 move container to workspace $ws5"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+5' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+5"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+6",
+          "normalized_key": "mod4+shift+6",
+          "command": "move container to workspace $ws6",
+          "line": 103,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+6 move container to workspace $ws6"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+6' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+6"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+7",
+          "normalized_key": "mod4+shift+7",
+          "command": "move container to workspace $ws7",
+          "line": 104,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+7 move container to workspace $ws7"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+7' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+7"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+8",
+          "normalized_key": "mod4+shift+8",
+          "command": "move container to workspace $ws8",
+          "line": 105,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+8 move container to workspace $ws8"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+8' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+8"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+9",
+          "normalized_key": "mod4+shift+9",
+          "command": "move container to workspace $ws9",
+          "line": 106,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+9 move container to workspace $ws9"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+9' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+9"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "$mod+Shift+0",
+          "normalized_key": "mod4+shift+0",
+          "command": "move container to workspace $ws10",
+          "line": 107,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym $mod+Shift+0 move container to workspace $ws10"
+        },
+        "reason": "Shift+number keys are error-prone",
+        "severity": "low",
+        "description": "'$mod+Shift+0' is ergonomically difficult: Shift+number keys are error-prone",
+        "suggestion": "$mod+Alt+0"
+      },
+      {
+        "binding": {
+          "type": "bindsym",
+          "key": "Ctrl+Shift+Print",
+          "normalized_key": "ctrl+shift+print",
+          "command": "exec --no-startup-id ~/.config/i3/scripts/screenshot.sh config",
+          "line": 299,
+          "mode": null,
+          "modifiers": "",
+          "original_line": "bindsym Ctrl+Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh config"
+        },
+        "reason": "Requires hand stretching",
+        "severity": "low",
+        "description": "'Ctrl+Shift+Print' is ergonomically difficult: Requires hand stretching",
+        "suggestion": "$mod+Alt+Print"
+      }
+    ],
+    "unused_combinations": [
+      {
+        "key": "$mod+g",
+        "ergonomic_score": 100,
+        "suggestion": "go to/grep"
+      },
+      {
+        "key": "$mod+q",
+        "ergonomic_score": 100,
+        "suggestion": "quit"
+      },
+      {
+        "key": "$mod+t",
+        "ergonomic_score": 100,
+        "suggestion": "terminal/tab"
+      },
+      {
+        "key": "$mod+y",
+        "ergonomic_score": 100,
+        "suggestion": "yank/yes"
+      },
+      {
+        "key": "$mod+u",
+        "ergonomic_score": 100,
+        "suggestion": "undo"
+      },
+      {
+        "key": "$mod+i",
+        "ergonomic_score": 100,
+        "suggestion": "insert/info"
+      },
+      {
+        "key": "$mod+o",
+        "ergonomic_score": 100,
+        "suggestion": "open"
+      },
+      {
+        "key": "$mod+z",
+        "ergonomic_score": 100,
+        "suggestion": "undo/zoom"
+      },
+      {
+        "key": "$mod+x",
+        "ergonomic_score": 100,
+        "suggestion": "cut/execute"
+      },
+      {
+        "key": "$mod+n",
+        "ergonomic_score": 100,
+        "suggestion": "new/next"
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "type": "bindsym",
+      "key": "$mod+1",
+      "normalized_key": "mod4+1",
+      "command": "workspace $ws1",
+      "line": 86,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+1 workspace $ws1"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+2",
+      "normalized_key": "mod4+2",
+      "command": "workspace $ws2",
+      "line": 87,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+2 workspace $ws2"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+3",
+      "normalized_key": "mod4+3",
+      "command": "workspace $ws3",
+      "line": 88,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+3 workspace $ws3"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+4",
+      "normalized_key": "mod4+4",
+      "command": "workspace $ws4",
+      "line": 89,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+4 workspace $ws4"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+5",
+      "normalized_key": "mod4+5",
+      "command": "workspace $ws5",
+      "line": 90,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+5 workspace $ws5"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+6",
+      "normalized_key": "mod4+6",
+      "command": "workspace $ws6",
+      "line": 91,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+6 workspace $ws6"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+7",
+      "normalized_key": "mod4+7",
+      "command": "workspace $ws7",
+      "line": 92,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+7 workspace $ws7"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+8",
+      "normalized_key": "mod4+8",
+      "command": "workspace $ws8",
+      "line": 93,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+8 workspace $ws8"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+9",
+      "normalized_key": "mod4+9",
+      "command": "workspace $ws9",
+      "line": 94,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+9 workspace $ws9"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+0",
+      "normalized_key": "mod4+0",
+      "command": "workspace $ws10",
+      "line": 95,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+0 workspace $ws10"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+1",
+      "normalized_key": "mod4+shift+1",
+      "command": "move container to workspace $ws1",
+      "line": 98,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+1 move container to workspace $ws1"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+2",
+      "normalized_key": "mod4+shift+2",
+      "command": "move container to workspace $ws2",
+      "line": 99,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+2 move container to workspace $ws2"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+3",
+      "normalized_key": "mod4+shift+3",
+      "command": "move container to workspace $ws3",
+      "line": 100,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+3 move container to workspace $ws3"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+4",
+      "normalized_key": "mod4+shift+4",
+      "command": "move container to workspace $ws4",
+      "line": 101,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+4 move container to workspace $ws4"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+5",
+      "normalized_key": "mod4+shift+5",
+      "command": "move container to workspace $ws5",
+      "line": 102,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+5 move container to workspace $ws5"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+6",
+      "normalized_key": "mod4+shift+6",
+      "command": "move container to workspace $ws6",
+      "line": 103,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+6 move container to workspace $ws6"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+7",
+      "normalized_key": "mod4+shift+7",
+      "command": "move container to workspace $ws7",
+      "line": 104,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+7 move container to workspace $ws7"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+8",
+      "normalized_key": "mod4+shift+8",
+      "command": "move container to workspace $ws8",
+      "line": 105,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+8 move container to workspace $ws8"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+9",
+      "normalized_key": "mod4+shift+9",
+      "command": "move container to workspace $ws9",
+      "line": 106,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+9 move container to workspace $ws9"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+0",
+      "normalized_key": "mod4+shift+0",
+      "command": "move container to workspace $ws10",
+      "line": 107,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+0 move container to workspace $ws10"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+1",
+      "normalized_key": "ctrl+mod4+1",
+      "command": "move container to workspace $ws1; workspace $ws1",
+      "line": 110,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+1 move container to workspace $ws1; workspace $ws1"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+2",
+      "normalized_key": "ctrl+mod4+2",
+      "command": "move container to workspace $ws2; workspace $ws2",
+      "line": 111,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+2 move container to workspace $ws2; workspace $ws2"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+3",
+      "normalized_key": "ctrl+mod4+3",
+      "command": "move container to workspace $ws3; workspace $ws3",
+      "line": 112,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+3 move container to workspace $ws3; workspace $ws3"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+4",
+      "normalized_key": "ctrl+mod4+4",
+      "command": "move container to workspace $ws4; workspace $ws4",
+      "line": 113,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+4 move container to workspace $ws4; workspace $ws4"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+5",
+      "normalized_key": "ctrl+mod4+5",
+      "command": "move container to workspace $ws5; workspace $ws5",
+      "line": 114,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+5 move container to workspace $ws5; workspace $ws5"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+6",
+      "normalized_key": "ctrl+mod4+6",
+      "command": "move container to workspace $ws6; workspace $ws6",
+      "line": 115,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+6 move container to workspace $ws6; workspace $ws6"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+7",
+      "normalized_key": "ctrl+mod4+7",
+      "command": "move container to workspace $ws7; workspace $ws7",
+      "line": 116,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+7 move container to workspace $ws7; workspace $ws7"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+8",
+      "normalized_key": "ctrl+mod4+8",
+      "command": "move container to workspace $ws8; workspace $ws8",
+      "line": 117,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+8 move container to workspace $ws8; workspace $ws8"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+9",
+      "normalized_key": "ctrl+mod4+9",
+      "command": "move container to workspace $ws9; workspace $ws9",
+      "line": 118,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+9 move container to workspace $ws9; workspace $ws9"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+0",
+      "normalized_key": "ctrl+mod4+0",
+      "command": "move container to workspace $ws10; workspace $ws10",
+      "line": 119,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+0 move container to workspace $ws10; workspace $ws10"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+Right",
+      "normalized_key": "ctrl+mod4+right",
+      "command": "workspace next",
+      "line": 122,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+Right workspace next"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+Left",
+      "normalized_key": "ctrl+mod4+left",
+      "command": "workspace prev",
+      "line": 123,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+Left workspace prev"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Tab",
+      "normalized_key": "mod4+tab",
+      "command": "workspace next",
+      "line": 124,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Tab workspace next"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+Tab",
+      "normalized_key": "mod4+shift+tab",
+      "command": "workspace prev",
+      "line": 125,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+Tab workspace prev"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Return",
+      "normalized_key": "mod4+return",
+      "command": "exec warp-terminal-preview || i3-sensible-terminal",
+      "line": 178,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Return exec warp-terminal-preview || i3-sensible-terminal"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+Return",
+      "normalized_key": "mod4+shift+return",
+      "command": "exec --no-startup-id i3-msg 'exec warp-terminal-preview || i3-sensible-terminal; [class=\".*\"] move scratchpad'",
+      "line": 179,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+Return exec --no-startup-id i3-msg 'exec warp-terminal-preview || i3-sensible-terminal; [class=\".*\"] move scratchpad'"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+minus",
+      "normalized_key": "mod4+shift+minus",
+      "command": "move scratchpad",
+      "line": 182,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+minus move scratchpad"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+minus",
+      "normalized_key": "mod4+minus",
+      "command": "scratchpad show",
+      "line": 183,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+minus scratchpad show"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+grave",
+      "normalized_key": "mod4+grave",
+      "command": "scratchpad show",
+      "line": 184,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+grave scratchpad show"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+q",
+      "normalized_key": "mod4+shift+q",
+      "command": "kill",
+      "line": 187,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+q kill"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+d",
+      "normalized_key": "mod4+d",
+      "command": "exec --no-startup-id \"command -v rofi > /dev/null && rofi -show drun -show-icons || dmenu_run\"",
+      "line": 190,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+d exec --no-startup-id \"command -v rofi > /dev/null && rofi -show drun -show-icons || dmenu_run\""
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+b",
+      "normalized_key": "mod4+shift+b",
+      "command": "exec brave || firefox",
+      "line": 193,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+b exec brave || firefox"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+t",
+      "normalized_key": "mod4+shift+t",
+      "command": "exec warp-terminal || i3-sensible-terminal",
+      "line": 194,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+t exec warp-terminal || i3-sensible-terminal"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+m",
+      "normalized_key": "mod4+shift+m",
+      "command": "exec blueman-manager || true",
+      "line": 195,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+m exec blueman-manager || true"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+f",
+      "normalized_key": "mod4+shift+f",
+      "command": "exec \"command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~\"",
+      "line": 196,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+f exec \"command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~\""
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+p",
+      "normalized_key": "mod4+p",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh",
+      "line": 199,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+m",
+      "normalized_key": "mod4+m",
+      "command": "exec i3-input -F 'mark %s' -l 1 -P 'Mark: '",
+      "line": 202,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+apostrophe",
+      "normalized_key": "mod4+apostrophe",
+      "command": "exec i3-input -F '[con_mark=\"%s\"] focus' -l 1 -P 'Goto: '",
+      "line": 203,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+apostrophe exec i3-input -F '[con_mark=\"%s\"] focus' -l 1 -P 'Goto: '"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+g",
+      "normalized_key": "mod4+shift+g",
+      "command": "gaps inner current toggle 8",
+      "line": 206,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+g gaps inner current toggle 8"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Mod1+h",
+      "normalized_key": "mod1+mod4+h",
+      "command": "exec python3 ~/.config/i3/scripts/i3-help.py",
+      "line": 209,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Mod1+h exec python3 ~/.config/i3/scripts/i3-help.py"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Mod1+c",
+      "normalized_key": "mod1+mod4+c",
+      "command": "exec python3 ~/.config/i3/scripts/i3-help.py --conflicts",
+      "line": 210,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Mod1+c exec python3 ~/.config/i3/scripts/i3-help.py --conflicts"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Mod1+n",
+      "normalized_key": "mod1+mod4+n",
+      "command": "exec python3 ~/.config/i3/scripts/i3-help.py --natural",
+      "line": 211,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Mod1+n exec python3 ~/.config/i3/scripts/i3-help.py --natural"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+h",
+      "normalized_key": "mod4+h",
+      "command": "focus left",
+      "line": 218,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+h focus left"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+j",
+      "normalized_key": "mod4+j",
+      "command": "focus down",
+      "line": 219,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+j focus down"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+k",
+      "normalized_key": "mod4+k",
+      "command": "focus up",
+      "line": 220,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+k focus up"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+l",
+      "normalized_key": "mod4+l",
+      "command": "focus right",
+      "line": 221,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+l focus right"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Left",
+      "normalized_key": "mod4+left",
+      "command": "focus left",
+      "line": 224,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Left focus left"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Down",
+      "normalized_key": "mod4+down",
+      "command": "focus down",
+      "line": 225,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Down focus down"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Up",
+      "normalized_key": "mod4+up",
+      "command": "focus up",
+      "line": 226,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Up focus up"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Right",
+      "normalized_key": "mod4+right",
+      "command": "focus right",
+      "line": 227,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Right focus right"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+h",
+      "normalized_key": "mod4+shift+h",
+      "command": "move left",
+      "line": 230,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+h move left"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+j",
+      "normalized_key": "mod4+shift+j",
+      "command": "move down",
+      "line": 231,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+j move down"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+k",
+      "normalized_key": "mod4+shift+k",
+      "command": "move up",
+      "line": 232,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+k move up"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+l",
+      "normalized_key": "mod4+shift+l",
+      "command": "move right",
+      "line": 233,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+l move right"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+Left",
+      "normalized_key": "mod4+shift+left",
+      "command": "move left",
+      "line": 236,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+Left move left"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+Down",
+      "normalized_key": "mod4+shift+down",
+      "command": "move down",
+      "line": 237,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+Down move down"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+Up",
+      "normalized_key": "mod4+shift+up",
+      "command": "move up",
+      "line": 238,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+Up move up"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+Right",
+      "normalized_key": "mod4+shift+right",
+      "command": "move right",
+      "line": 239,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+Right move right"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+b",
+      "normalized_key": "mod4+b",
+      "command": "split h",
+      "line": 242,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+b split h"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+v",
+      "normalized_key": "mod4+v",
+      "command": "split v",
+      "line": 243,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+v split v"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+f",
+      "normalized_key": "mod4+f",
+      "command": "fullscreen toggle",
+      "line": 246,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+f fullscreen toggle"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+s",
+      "normalized_key": "mod4+s",
+      "command": "layout stacking",
+      "line": 249,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+s layout stacking"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+w",
+      "normalized_key": "mod4+w",
+      "command": "layout tabbed",
+      "line": 250,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+w layout tabbed"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+e",
+      "normalized_key": "mod4+e",
+      "command": "layout toggle split",
+      "line": 251,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+e layout toggle split"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+space",
+      "normalized_key": "mod4+shift+space",
+      "command": "floating toggle",
+      "line": 254,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+space floating toggle"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+space",
+      "normalized_key": "mod4+space",
+      "command": "focus mode_toggle",
+      "line": 257,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+space focus mode_toggle"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+a",
+      "normalized_key": "mod4+a",
+      "command": "focus parent",
+      "line": 260,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+a focus parent"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+c",
+      "normalized_key": "mod4+c",
+      "command": "focus child",
+      "line": 261,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+c focus child"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86AudioRaiseVolume",
+      "normalized_key": "xf86audioraisevolume",
+      "command": "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status",
+      "line": 269,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86AudioLowerVolume",
+      "normalized_key": "xf86audiolowervolume",
+      "command": "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status",
+      "line": 270,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86AudioMute",
+      "normalized_key": "xf86audiomute",
+      "command": "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status",
+      "line": 271,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86AudioMicMute",
+      "normalized_key": "xf86audiomicmute",
+      "command": "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status",
+      "line": 272,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+F11",
+      "normalized_key": "mod4+f11",
+      "command": "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status",
+      "line": 275,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+F11 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+F12",
+      "normalized_key": "mod4+f12",
+      "command": "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status",
+      "line": 276,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+F12 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+F10",
+      "normalized_key": "mod4+f10",
+      "command": "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status",
+      "line": 277,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+F10 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86AudioPlay",
+      "normalized_key": "xf86audioplay",
+      "command": "exec playerctl play-pause",
+      "line": 280,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86AudioPlay exec playerctl play-pause"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86AudioPause",
+      "normalized_key": "xf86audiopause",
+      "command": "exec playerctl play-pause",
+      "line": 281,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86AudioPause exec playerctl play-pause"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86AudioNext",
+      "normalized_key": "xf86audionext",
+      "command": "exec playerctl next",
+      "line": 282,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86AudioNext exec playerctl next"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86AudioPrev",
+      "normalized_key": "xf86audioprev",
+      "command": "exec playerctl previous",
+      "line": 283,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86AudioPrev exec playerctl previous"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86MonBrightnessUp",
+      "normalized_key": "xf86monbrightnessup",
+      "command": "exec light -A 10 || xbacklight -inc 10",
+      "line": 286,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86MonBrightnessUp exec light -A 10 || xbacklight -inc 10"
+    },
+    {
+      "type": "bindsym",
+      "key": "XF86MonBrightnessDown",
+      "normalized_key": "xf86monbrightnessdown",
+      "command": "exec light -U 10 || xbacklight -dec 10",
+      "line": 287,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym XF86MonBrightnessDown exec light -U 10 || xbacklight -dec 10"
+    },
+    {
+      "type": "bindsym",
+      "key": "Print",
+      "normalized_key": "print",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/screenshot.sh full",
+      "line": 291,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh full"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Print",
+      "normalized_key": "mod4+print",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/screenshot.sh gui",
+      "line": 293,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh gui"
+    },
+    {
+      "type": "bindsym",
+      "key": "Shift+Print",
+      "normalized_key": "shift+print",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/screenshot.sh window",
+      "line": 295,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh window"
+    },
+    {
+      "type": "bindsym",
+      "key": "Ctrl+Print",
+      "normalized_key": "ctrl+print",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/screenshot.sh clipboard",
+      "line": 297,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym Ctrl+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh clipboard"
+    },
+    {
+      "type": "bindsym",
+      "key": "Ctrl+Shift+Print",
+      "normalized_key": "ctrl+shift+print",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/screenshot.sh config",
+      "line": 299,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym Ctrl+Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh config"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+shift+x",
+      "normalized_key": "mod4+shift+x",
+      "command": "exec i3lock-fancy || i3lock -c 000000",
+      "line": 302,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+shift+x exec i3lock-fancy || i3lock -c 000000"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Ctrl+p",
+      "normalized_key": "ctrl+mod4+p",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/printer-manager.sh menu",
+      "line": 305,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Ctrl+p exec --no-startup-id ~/.config/i3/scripts/printer-manager.sh menu"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+Ctrl+p",
+      "normalized_key": "ctrl+mod4+shift+p",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/printer-manager.sh config",
+      "line": 306,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+Ctrl+p exec --no-startup-id ~/.config/i3/scripts/printer-manager.sh config"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Alt+p",
+      "normalized_key": "alt+mod4+p",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/printer-manager.sh test",
+      "line": 307,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Alt+p exec --no-startup-id ~/.config/i3/scripts/printer-manager.sh test"
+    },
+    {
+      "type": "bindsym",
+      "key": "h",
+      "normalized_key": "h",
+      "command": "resize shrink width 5 px or 5 ppt",
+      "line": 398,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym h resize shrink width 5 px or 5 ppt"
+    },
+    {
+      "type": "bindsym",
+      "key": "j",
+      "normalized_key": "j",
+      "command": "resize grow height 5 px or 5 ppt",
+      "line": 399,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym j resize grow height 5 px or 5 ppt"
+    },
+    {
+      "type": "bindsym",
+      "key": "k",
+      "normalized_key": "k",
+      "command": "resize shrink height 5 px or 5 ppt",
+      "line": 400,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym k resize shrink height 5 px or 5 ppt"
+    },
+    {
+      "type": "bindsym",
+      "key": "l",
+      "normalized_key": "l",
+      "command": "resize grow width 5 px or 5 ppt",
+      "line": 401,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym l resize grow width 5 px or 5 ppt"
+    },
+    {
+      "type": "bindsym",
+      "key": "Left",
+      "normalized_key": "left",
+      "command": "resize shrink width 10 px or 10 ppt",
+      "line": 403,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym Left resize shrink width 10 px or 10 ppt"
+    },
+    {
+      "type": "bindsym",
+      "key": "Down",
+      "normalized_key": "down",
+      "command": "resize grow height 10 px or 10 ppt",
+      "line": 404,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym Down resize grow height 10 px or 10 ppt"
+    },
+    {
+      "type": "bindsym",
+      "key": "Up",
+      "normalized_key": "up",
+      "command": "resize shrink height 10 px or 10 ppt",
+      "line": 405,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym Up resize shrink height 10 px or 10 ppt"
+    },
+    {
+      "type": "bindsym",
+      "key": "Right",
+      "normalized_key": "right",
+      "command": "resize grow width 10 px or 10 ppt",
+      "line": 406,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym Right resize grow width 10 px or 10 ppt"
+    },
+    {
+      "type": "bindsym",
+      "key": "Return",
+      "normalized_key": "return",
+      "command": "mode \"default\"",
+      "line": 408,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym Return mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "Escape",
+      "normalized_key": "escape",
+      "command": "mode \"default\"",
+      "line": 409,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym Escape mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+r",
+      "normalized_key": "mod4+r",
+      "command": "mode \"default\"",
+      "line": 410,
+      "mode": "resize",
+      "modifiers": "",
+      "original_line": "bindsym $mod+r mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+r",
+      "normalized_key": "mod4+r",
+      "command": "mode \"resize\"",
+      "line": 412,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+r mode \"resize\""
+    },
+    {
+      "type": "bindsym",
+      "key": "l",
+      "normalized_key": "l",
+      "command": "exec --no-startup-id i3lock-fancy || i3lock -c 000000, mode \"default\"",
+      "line": 417,
+      "mode": "$mode_system",
+      "modifiers": "",
+      "original_line": "bindsym l exec --no-startup-id i3lock-fancy || i3lock -c 000000, mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "s",
+      "normalized_key": "s",
+      "command": "exec --no-startup-id systemctl suspend, mode \"default\"",
+      "line": 418,
+      "mode": "$mode_system",
+      "modifiers": "",
+      "original_line": "bindsym s exec --no-startup-id systemctl suspend, mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "u",
+      "normalized_key": "u",
+      "command": "exec --no-startup-id dm-tool switch-to-greeter, mode \"default\"",
+      "line": 419,
+      "mode": "$mode_system",
+      "modifiers": "",
+      "original_line": "bindsym u exec --no-startup-id dm-tool switch-to-greeter, mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "e",
+      "normalized_key": "e",
+      "command": "exec --no-startup-id i3-msg exit, mode \"default\"",
+      "line": 420,
+      "mode": "$mode_system",
+      "modifiers": "",
+      "original_line": "bindsym e exec --no-startup-id i3-msg exit, mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "h",
+      "normalized_key": "h",
+      "command": "exec --no-startup-id systemctl hibernate, mode \"default\"",
+      "line": 421,
+      "mode": "$mode_system",
+      "modifiers": "",
+      "original_line": "bindsym h exec --no-startup-id systemctl hibernate, mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "r",
+      "normalized_key": "r",
+      "command": "exec --no-startup-id systemctl reboot, mode \"default\"",
+      "line": 422,
+      "mode": "$mode_system",
+      "modifiers": "",
+      "original_line": "bindsym r exec --no-startup-id systemctl reboot, mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "Shift+s",
+      "normalized_key": "shift+s",
+      "command": "exec --no-startup-id systemctl poweroff, mode \"default\"",
+      "line": 423,
+      "mode": "$mode_system",
+      "modifiers": "",
+      "original_line": "bindsym Shift+s exec --no-startup-id systemctl poweroff, mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "Return",
+      "normalized_key": "return",
+      "command": "mode \"default\"",
+      "line": 425,
+      "mode": "$mode_system",
+      "modifiers": "",
+      "original_line": "bindsym Return mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "Escape",
+      "normalized_key": "escape",
+      "command": "mode \"default\"",
+      "line": 426,
+      "mode": "$mode_system",
+      "modifiers": "",
+      "original_line": "bindsym Escape mode \"default\""
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Pause",
+      "normalized_key": "mod4+pause",
+      "command": "mode \"$mode_system\"",
+      "line": 428,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Pause mode \"$mode_system\""
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+s",
+      "normalized_key": "mod4+shift+s",
+      "command": "exec --no-startup-id systemctl suspend",
+      "line": 431,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+s exec --no-startup-id systemctl suspend"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+c",
+      "normalized_key": "mod4+shift+c",
+      "command": "reload",
+      "line": 438,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+c reload"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+r",
+      "normalized_key": "mod4+shift+r",
+      "command": "restart",
+      "line": 441,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+r restart"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+e",
+      "normalized_key": "mod4+shift+e",
+      "command": "exec \"i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'\"",
+      "line": 444,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+e exec \"i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'\""
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+Shift+w",
+      "normalized_key": "mod4+shift+w",
+      "command": "exec --no-startup-id i3-save-tree --workspace current > ~/.config/i3/workspace-$(date +%Y%m%d_%H%M%S).json",
+      "line": 447,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+Shift+w exec --no-startup-id i3-save-tree --workspace current > ~/.config/i3/workspace-$(date +%Y%m%d_%H%M%S).json"
+    },
+    {
+      "type": "bindsym",
+      "key": "$mod+F1",
+      "normalized_key": "mod4+f1",
+      "command": "exec --no-startup-id ~/.config/i3/scripts/show-keybindings.sh",
+      "line": 499,
+      "mode": null,
+      "modifiers": "",
+      "original_line": "bindsym $mod+F1 exec --no-startup-id ~/.config/i3/scripts/show-keybindings.sh"
+    }
+  ]
+}

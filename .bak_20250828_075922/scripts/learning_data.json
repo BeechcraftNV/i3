@@ -1,0 +1,143 @@
+{
+  "failed_searches": [
+    {
+      "query": "screenshoot",
+      "timestamp": 1754498733.691282,
+      "result_count": 0,
+      "suggested_matches": [
+        "Screenshot - Full screen",
+        "Screenshot - Interactive selection"
+      ],
+      "user_selected": null,
+      "user_feedback": null,
+      "session_id": ""
+    },
+    {
+      "query": "screenshoot",
+      "timestamp": 1754498769.7302175,
+      "result_count": 0,
+      "suggested_matches": [
+        "Screenshot - Full screen",
+        "Screenshot - Interactive selection"
+      ],
+      "user_selected": null,
+      "user_feedback": null,
+      "session_id": ""
+    },
+    {
+      "query": "capture window",
+      "timestamp": 1754498769.7311254,
+      "result_count": 0,
+      "suggested_matches": [
+        "Screenshot - Active window",
+        "Screenshot - Interactive selection"
+      ],
+      "user_selected": null,
+      "user_feedback": null,
+      "session_id": ""
+    }
+  ],
+  "insights": [
+    {
+      "pattern_type": "typo",
+      "original_term": "screenshoot",
+      "suggested_mapping": "screenshot",
+      "confidence_score": 1.0,
+      "evidence_count": 2,
+      "first_seen": 1754498733.6915987,
+      "last_seen": 1754498769.7305272,
+      "user_confirmations": 0,
+      "user_rejections": 0
+    },
+    {
+      "pattern_type": "typo",
+      "original_term": "screenshoot",
+      "suggested_mapping": "screen",
+      "confidence_score": 0.8058823529411765,
+      "evidence_count": 2,
+      "first_seen": 1754498733.691611,
+      "last_seen": 1754498769.7305372,
+      "user_confirmations": 0,
+      "user_rejections": 0
+    },
+    {
+      "pattern_type": "typo",
+      "original_term": "screenshoot",
+      "suggested_mapping": "snapshot",
+      "confidence_score": 0.731578947368421,
+      "evidence_count": 2,
+      "first_seen": 1754498733.6916263,
+      "last_seen": 1754498769.7305515,
+      "user_confirmations": 0,
+      "user_rejections": 0
+    },
+    {
+      "pattern_type": "synonym",
+      "original_term": "screenshoot",
+      "suggested_mapping": "screenshot",
+      "confidence_score": 1.0,
+      "evidence_count": 4,
+      "first_seen": 1754498733.691646,
+      "last_seen": 1754498769.7306156,
+      "user_confirmations": 0,
+      "user_rejections": 0
+    },
+    {
+      "pattern_type": "synonym",
+      "original_term": "screenshoot",
+      "suggested_mapping": "screen",
+      "confidence_score": 0.8058823529411765,
+      "evidence_count": 2,
+      "first_seen": 1754498733.69166,
+      "last_seen": 1754498769.7305663,
+      "user_confirmations": 0,
+      "user_rejections": 0
+    },
+    {
+      "pattern_type": "typo",
+      "original_term": "capture window",
+      "suggested_mapping": "capture",
+      "confidence_score": 0.6666666666666666,
+      "evidence_count": 1,
+      "first_seen": 1754498769.7314084,
+      "last_seen": 1754498769.7314084,
+      "user_confirmations": 0,
+      "user_rejections": 0
+    },
+    {
+      "pattern_type": "typo",
+      "original_term": "capture window",
+      "suggested_mapping": "window",
+      "confidence_score": 0.6,
+      "evidence_count": 1,
+      "first_seen": 1754498769.7314188,
+      "last_seen": 1754498769.7314188,
+      "user_confirmations": 0,
+      "user_rejections": 0
+    },
+    {
+      "pattern_type": "synonym",
+      "original_term": "capture",
+      "suggested_mapping": "active",
+      "confidence_score": 0.46153846153846156,
+      "evidence_count": 1,
+      "first_seen": 1754498769.731458,
+      "last_seen": 1754498769.731458,
+      "user_confirmations": 0,
+      "user_rejections": 0
+    }
+  ],
+  "config": {
+    "max_failed_searches": 1000,
+    "max_insights": 500,
+    "min_confidence_threshold": 0.3,
+    "auto_apply_threshold": 0.8,
+    "cleanup_age_days": 30,
+    "min_evidence_count": 2,
+    "max_suggestions_per_query": 5,
+    "typo_similarity_threshold": 0.6,
+    "synonym_similarity_threshold": 0.4
+  },
+  "last_updated": 1754498769.73155,
+  "version": "1.0"
+}

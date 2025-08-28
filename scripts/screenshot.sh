@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Comprehensive Screenshot Management Script
 # Usage: screenshot.sh [full|selection|window|gui|clipboard]
@@ -9,83 +10,83 @@ TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 # Ensure directories exist
 mkdir -p "$SCREENSHOT_DIR"/{full,selection,window}
 
-case "$1" in
-    "full")
-        # Full screen screenshot - active monitor only
-        OUTPUT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).output')
-        GEOMETRY=$(xrandr | grep "\"$OUTPUT connected\"" | grep -o '[0-9]*x[0-9]*+[0-9]*+[0-9]*')
-        
-        if [ -n "$GEOMETRY" ]; then
-            flameshot screen -n 0 -p "$SCREENSHOT_DIR/full/fullscreen_$TIMESTAMP.png"
-            notify-send "Screenshot" "Full screen saved to $SCREENSHOT_DIR/full/"
-        else
-            # Fallback to all screens
-            flameshot full -p "$SCREENSHOT_DIR/full/fullscreen_$TIMESTAMP.png"
-            notify-send "Screenshot" "Full screen saved to $SCREENSHOT_DIR/full/"
+# Ensure flameshot present
+if ! command -v flameshot >/dev/null 2>&1; then
+  command -v notify-send >/dev/null 2>&1 && notify-send "Screenshot" "flameshot is not installed" || true
+  echo "flameshot not found" >&2
+  exit 1
+fi
+
+case "${1:-full}" in
+  "full")
+    # Full screen screenshot - active monitor only
+    if ! command -v jq >/dev/null 2>&1; then
+      # Fallback to all screens
+      flameshot full -p "$SCREENSHOT_DIR/full/fullscreen_$TIMESTAMP.png"
+      command -v notify-send >/dev/null 2>&1 && notify-send "Screenshot" "Full screen saved to $SCREENSHOT_DIR/full/" || true
+      exit 0
+    fi
+    OUTPUT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).output')
+    if [[ -z "${OUTPUT:-}" ]]; then
+      flameshot full -p "$SCREENSHOT_DIR/full/fullscreen_$TIMESTAMP.png"
+      command -v notify-send >/dev/null 2>&1 && notify-send "Screenshot" "Full screen saved to $SCREENSHOT_DIR/full/" || true
+      exit 0
+    fi
+    # Find monitor index for flameshot -n
+    mapfile -t CONNECTED < <(xrandr | awk '/ connected/{print $1}')
+    INDEX=0
+    FOUND=0
+    for i in "${!CONNECTED[@]}"; do
+      if [[ "${CONNECTED[$i]}" == "$OUTPUT" ]]; then INDEX=$i; FOUND=1; break; fi
+    done
+    if [[ "$FOUND" -eq 1 ]]; then
+      flameshot screen -n "$INDEX" -p "$SCREENSHOT_DIR/full/fullscreen_$TIMESTAMP.png"
+    else
+      flameshot full -p "$SCREENSHOT_DIR/full/fullscreen_$TIMESTAMP.png"
+    fi
+    command -v notify-send >/dev/null 2>&1 && notify-send "Screenshot" "Full screen saved to $SCREENSHOT_DIR/full/" || true
+    ;;
+
+  "selection")
+    # Interactive selection
+    flameshot gui -p "$SCREENSHOT_DIR/selection/selection_$TIMESTAMP.png"
+    ;;
+
+  "window")
+    # Active window screenshot - saves to disk AND copies to clipboard
+    if command -v xdotool >/dev/null 2>&1 && command -v maim >/dev/null 2>&1; then
+      WINDOW_ID=$(xdotool getactivewindow 2>/dev/null || echo "")
+      if [[ -n "$WINDOW_ID" ]]; then
+        FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+        maim --window="$WINDOW_ID" "$FILEPATH"
+        if command -v xclip >/dev/null 2>&1; then
+          xclip -selection clipboard -t image/png < "$FILEPATH"
         fi
-        ;;
-    
-    "selection")
-        # Interactive selection
-        flameshot gui -p "$SCREENSHOT_DIR/selection/selection_$TIMESTAMP.png"
-        ;;
-    
-    "window")
-        # Active window screenshot - saves to disk AND copies to clipboard
-        # Check if we have xdotool and try to get active window
-        if command -v xdotool >/dev/null 2>&1; then
-            WINDOW_ID=$(xdotool getactivewindow 2>/dev/null)
-            if [ -n "$WINDOW_ID" ]; then
-                # Use maim to capture the specific window (more reliable than Flameshot for this)
-                if command -v maim >/dev/null 2>&1; then
-                    FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
-                    # Save to disk
-                    maim --window="$WINDOW_ID" "$FILEPATH"
-                    # Copy to clipboard
-                    cat "$FILEPATH" | xclip -selection clipboard -t image/png
-                    notify-send "Screenshot" "Window captured → saved to disk and copied to clipboard"
-                else
-                    # Fallback to Flameshot GUI if maim not available
-                    notify-send "Screenshot" "Select the active window (will save to disk and clipboard)"
-                    FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
-                    flameshot gui --path="$FILEPATH" --clipboard
-                fi
-            else
-                notify-send "Screenshot" "No active window found, please select manually"
-                FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
-                flameshot gui --path="$FILEPATH" --clipboard
-            fi
-        else
-            # No xdotool, fallback to manual selection  
-            notify-send "Screenshot" "Select the window to capture (will save to disk and clipboard)"
-            FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
-            flameshot gui --path="$FILEPATH" --clipboard
-        fi
-        ;;
-    
-    "gui")
-        # Flameshot GUI mode (interactive with editing)
-        flameshot gui
-        ;;
-    
-    "clipboard")
-        # Quick selection to clipboard only
-        flameshot gui --clipboard
-        ;;
-    
-    "config")
-        # Open Flameshot configuration
-        flameshot config
-        ;;
-    
-    *)
-        echo "Usage: $0 [full|selection|window|gui|clipboard|config]"
-        echo "  full      - Full screen (active monitor)"
-        echo "  selection - Interactive selection with GUI"
-        echo "  window    - Active window"
-        echo "  gui       - Flameshot GUI with editing tools"
-        echo "  clipboard - Quick selection to clipboard only"
-        echo "  config    - Open Flameshot configuration"
-        exit 1
-        ;;
+        command -v notify-send >/dev/null 2>&1 && notify-send "Screenshot" "Window captured → saved to disk${DISPLAY:+ and copied to clipboard}" || true
+      else
+        FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+        flameshot gui --path="$FILEPATH" --clipboard
+      fi
+    else
+      FILEPATH="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
+      flameshot gui --path="$FILEPATH" --clipboard
+    fi
+    ;;
+
+  "gui")
+    flameshot gui
+    ;;
+
+  "clipboard")
+    flameshot gui --clipboard
+    ;;
+
+  "config")
+    flameshot config
+    ;;
+
+  *)
+    echo "Usage: $0 [full|selection|window|gui|clipboard|config]" >&2
+    exit 1
+    ;;
 esac

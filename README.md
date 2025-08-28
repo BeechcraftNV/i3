@@ -168,9 +168,15 @@ sudo systemctl enable --now cups
 ## Optional Packages for Full Functionality
 ```bash
 # Core functionality
-sudo apt install i3 i3blocks feh picom xss-lock i3lock rofi flameshot
+sudo apt install i3 i3blocks feh picom xss-lock i3lock rofi dex \
+  network-manager-gnome flameshot x11-xserver-utils
+```
 
-# Printer management
+### Arch/Manjaro (pacman)
+```bash
+sudo pacman -S --needed i3-wm i3blocks feh picom xss-lock i3lock rofi dex \
+  network-manager-applet flameshot jq xclip maim xdotool brightnessctl
+```
 sudo apt install cups system-config-printer gnome-control-center
 
 # File manager and extras
@@ -183,6 +189,8 @@ Place your desired wallpaper as `~/.config/i3/wallpaper.jpg` or modify the feh c
 ## Reloading Configuration
 - `Super+Shift+c`: Reload i3 configuration
 - `Super+Shift+r`: Restart i3 in place
+
+> Note: This setup uses i3blocks (not i3status). Audio keys signal i3blocks for instant updates.
 
 ---
 
