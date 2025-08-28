@@ -1,7 +1,8 @@
 {
   "binding_usage": {
     "Super+grave:scratchpad": 1,
-    "Super+Ctrl+p:Printer management": 1
+    "Super+Ctrl+p:Printer management": 1,
+    "Ctrl+Print:Screenshot utility": 1
   },
   "search_terms": {
     "how do resize windows?": 1,
@@ -9,7 +10,8 @@
   },
   "popular_bindings": [
     "Super+grave:scratchpad",
-    "Super+Ctrl+p:Printer management"
+    "Super+Ctrl+p:Printer management",
+    "Ctrl+Print:Screenshot utility"
   ],
-  "last_updated": 1755273486.6312068
+  "last_updated": 1756396372.8124075
 }

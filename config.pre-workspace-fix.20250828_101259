@@ -68,22 +68,9 @@ set $ws9 "9:Misc"
 set $ws10 "10:AI"
 
 # Multi-monitor workspace distribution
-# Odd workspaces (1,3,5,7,9) → Primary monitor (HDMI-1, left)
-# Even workspaces (2,4,6,8,10) → Secondary monitor (HDMI-2, right)
-# With fallbacks for single-monitor setups
-
-# Workspace → Output assignments
-workspace $ws1 output HDMI-1 eDP-1 DP-1 VGA-1
-workspace $ws3 output HDMI-1 eDP-1 DP-1 VGA-1
-workspace $ws5 output HDMI-1 eDP-1 DP-1 VGA-1
-workspace $ws7 output HDMI-1 eDP-1 DP-1 VGA-1
-workspace $ws9 output HDMI-1 eDP-1 DP-1 VGA-1
-
-workspace $ws2 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
-workspace $ws4 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
-workspace $ws6 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
-workspace $ws8 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
-workspace $ws10 output HDMI-2 HDMI-1 eDP-1 DP-1 VGA-1
+# Odd workspaces (1,3,5,7,9) → Primary monitor
+# Even workspaces (2,4,6,8,10) → Secondary monitor
+# Removed static workspace→output mapping (use setup-monitors.sh)
 
 # Switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -166,9 +153,6 @@ exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"$ws2\"; exec brave ||
 exec --no-startup-id sh -c "sleep 3 && command -v code > /dev/null && i3-msg 'workspace \"$ws3\"; exec code' || true"
 exec --no-startup-id sh -c "sleep 3 && command -v thunar > /dev/null && i3-msg 'workspace \\\"$ws4\\\"; exec thunar' || true"
 
-# Launch an extra Brave/Firefox window in workspace 10 for AI tools
-exec --no-startup-id sh -c "sleep 4 && i3-msg 'workspace \"$ws10\"; exec brave || firefox'"
-
 # ============================================================================
 # KEY BINDINGS - BASIC CONTROLS
 # ============================================================================
@@ -199,9 +183,6 @@ bindsym $mod+Shift+b exec brave || firefox
 bindsym $mod+Shift+t exec warp-terminal || i3-sensible-terminal
 bindsym $mod+Shift+m exec blueman-manager || true
 bindsym $mod+Shift+f exec "command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~"
-
-# Launch browser directly in workspace 10:AI
-bindsym $mod+Alt+0 exec --no-startup-id i3-msg 'workspace "10:AI"; exec brave || firefox'
 
 # Monitor configuration hotkey
 bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh
