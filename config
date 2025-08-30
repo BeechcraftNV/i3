@@ -158,10 +158,10 @@ exec --no-startup-id i3-msg "workspace $ws1; workspace $ws2; workspace $ws1"
 
 # Start applications on specific workspaces (with delays for proper assignment)
 exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"$ws1\"; exec warp-terminal || i3-sensible-terminal'"
-exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"$ws2\"; exec brave'"  # Use Brave for general browsing
+exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"$ws2\"; exec brave'"
 exec --no-startup-id sh -c "sleep 3 && command -v code > /dev/null && i3-msg 'workspace \"$ws3\"; exec code' || true"
 exec --no-startup-id sh -c "sleep 3 && command -v filebrowser > /dev/null && i3-msg 'workspace \"$ws4\"; exec filebrowser' || true"
-exec --no-startup-id sh -c "sleep 4 && i3-msg 'workspace \"$ws10\"; exec brave --new-window https://chat.openai.com https://claude.ai https://gemini.google.com https://copilot.microsoft.com'"  # Use Firefox for AI
+exec --no-startup-id sh -c "sleep 4 && i3-msg 'workspace \"$ws10\"; exec brave --new-window https://chat.openai.com https://claude.ai https://gemini.google.com https://copilot.microsoft.com'"
 
 # ============================================================================
 # KEY BINDINGS - BASIC CONTROLS
@@ -194,8 +194,8 @@ bindsym $mod+Shift+t exec warp-terminal || i3-sensible-terminal
 bindsym $mod+Shift+m exec blueman-manager || true
 bindsym $mod+Shift+f exec "command -v thunar > /dev/null && thunar || command -v nautilus > /dev/null && nautilus || command -v pcmanfm > /dev/null && pcmanfm || xdg-open ~"
 
-# Monitor configuration hotkey
-bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/setup-monitors.sh
+# Monitor configuration hotkey - Enhanced display menu
+bindsym $mod+p exec --no-startup-id ~/.config/i3/scripts/display-menu.sh
 
 # Window marking system for quick navigation
 bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
@@ -203,6 +203,9 @@ bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: 
 
 # Smart gaps toggle
 bindsym $mod+Shift+g gaps inner current toggle 8
+
+# Enhanced keybinding help system with advanced search
+bindsym $mod+Mod1+h exec --no-startup-id ~/.config/i3/scripts/i3-help.py
 
 # ============================================================================
 # KEY BINDINGS - WINDOW MANAGEMENT
@@ -251,7 +254,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # Focus parent/child container
-bindsym $mod+a focus parent
+bindsym $mod+q focus parent
 bindsym $mod+c focus child
 
 # ============================================================================
@@ -270,9 +273,15 @@ bindsym $mod+F11 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% &
 bindsym $mod+F12 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
 bindsym $mod+F10 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 
-# Audio device switching
+# Audio device switching - individual sink controls
+bindsym $mod+F7 exec --no-startup-id pactl set-card-profile alsa_card.pci-0000_00_1f.3 output:hdmi-stereo && pactl set-default-sink alsa_output.pci-0000_00_1f.3.hdmi-stereo && notify-send "Audio Output" "Switched to HDMI Audio" || true
+bindsym $mod+F8 exec --no-startup-id pactl set-card-profile alsa_card.pci-0000_00_1f.3 output:analog-stereo && pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo && notify-send "Audio Output" "Switched to Internal Speakers" || true
 bindsym $mod+F9 exec --no-startup-id pactl set-default-sink alsa_output.usb-KTMicro_KT_USB_Audio_2021-06-07-0000-0000-0000--00.analog-stereo && notify-send "Audio Output" "Switched to USB Audio" || true
-bindsym $mod+F8 exec --no-startup-id pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo && notify-send "Audio Output" "Switched to Internal Audio" || true
+
+# Audio device selector GUI (rofi menu)
+bindsym $mod+Shift+o exec --no-startup-id ~/.config/i3/scripts/audio-menu.sh
+
+# PulseAudio Volume Control GUI
 bindsym $mod+Shift+a exec --no-startup-id pavucontrol
 
 # Media player controls
@@ -285,10 +294,24 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86MonBrightnessUp exec light -A 10 || xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec light -U 10 || xbacklight -dec 10
 
-# Screenshots (using maim) - all copy to clipboard by default
-bindsym Print exec --no-startup-id "maim | xclip -selection clipboard -t image/png && (notify-send 'Screenshot copied' 'Fullscreen screenshot copied to clipboard' || true)"
-bindsym $mod+Print exec --no-startup-id "maim --select | xclip -selection clipboard -t image/png && (notify-send 'Screenshot copied' 'Selected area screenshot copied to clipboard' || true)"
-bindsym Shift+Print exec --no-startup-id "mkdir -p ~/Pictures && maim --select ~/Pictures/screenshot-$(date +%Y%m%d_%H%M%S).png && (notify-send 'Screenshot saved' 'Selected area screenshot saved to ~/Pictures' || true)"
+# ============================================================================
+# SCREENSHOTS — CENTRALIZED VIA screenshot.sh
+# ============================================================================
+
+# Region → clipboard (fast, default)
+bindsym Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh selection
+
+# Fullscreen (active monitor) → clipboard
+bindsym Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh full
+
+# Region → clipboard AND save to ~/Pictures/screenshots
+bindsym Ctrl+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh gui
+
+# Active window → clipboard
+bindsym Mod1+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh window
+
+# Optional: open Flameshot config
+bindsym $mod+Shift+Print exec --no-startup-id ~/.config/i3/scripts/screenshot.sh config
 
 # Lock screen (with fallback)
 bindsym $mod+shift+x exec i3lock-fancy || i3lock -c 000000
@@ -442,7 +465,7 @@ bar {
         position top
         tray_output primary
         tray_padding 2
-        
+
         colors {
                 background $bg-color
                 separator #757575

@@ -1,0 +1,12 @@
+{
+  "binding_usage": {
+    "XF86AudioPrev:Previous track": 1,
+    "Super+F10:pactl": 1
+  },
+  "search_terms": {},
+  "popular_bindings": [
+    "XF86AudioPrev:Previous track",
+    "Super+F10:pactl"
+  ],
+  "last_updated": 1754691411.5692255
+}

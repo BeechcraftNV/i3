@@ -1,0 +1,217 @@
+---
+# Help topics for the i3 help application.
+#
+# Each entry contains a `question`, an `answer` and a `category`.
+# The `category` groups related keybindings together.  The help script
+# uses this structure to present a category menu before showing the
+# individual topics.
+
+- category: Terminal
+  question: "How do I open a terminal?"
+  answer: >-
+    Press `$mod+Return` to launch your default terminal.  The config uses
+    `warp-terminal-preview` if available or falls back to `i3-sensible-terminal`.
+
+- category: Terminal
+  question: "How do I open a scratchpad terminal?"
+  answer: >-
+    Press `$mod+Shift+Return` to open a terminal and send it to the scratchpad.
+    The scratchpad allows you to hide and recall windows with `$mod+minus`
+    or `$mod+grave`.
+
+- category: Scratchpad
+  question: "How do I show or hide the scratchpad?"
+  answer: >-
+    Press `$mod+minus` or `$mod+grave` to show the most recently hidden
+    scratchpad window.  To send a window to the scratchpad, use
+    `$mod+Shift+minus`.
+
+- category: Window Management
+  question: "How do I kill the focused window?"
+  answer: >-
+    Press `$mod+Shift+q` to kill (close) the currently focused window.
+
+- category: Application Launchers
+  question: "How do I open the application launcher?"
+  answer: >-
+    Press `$mod+d` to open your application launcher.  Your config tries
+    `rofi -show drun` if it’s installed; otherwise it falls back to
+    `dmenu_run`.
+
+- category: Application Launchers
+  question: "How do I launch my browser quickly?"
+  answer: >-
+    Press `$mod+Shift+b` to launch your web browser.  The binding tries
+    `brave` first and falls back to `firefox` if Brave is not available.
+
+- category: Application Launchers
+  question: "How do I launch a terminal quickly?"
+  answer: >-
+    Press `$mod+Shift+t` to open a terminal immediately.  It attempts
+    to run `warp-terminal` and falls back to `i3-sensible-terminal`.
+
+- category: Utilities
+  question: "How do I open the Bluetooth manager?"
+  answer: >-
+    Press `$mod+Shift+m` to launch the Bluetooth manager (`blueman-manager`).
+
+- category: Utilities
+  question: "How do I open the file manager?"
+  answer: >-
+    Press `$mod+Shift+f` to open your preferred file manager.  The script
+    checks for `thunar`, `nautilus`, or `pcmanfm` and falls back to
+    `xdg-open ~`.
+
+- category: Monitor
+  question: "How do I configure my monitors?"
+  answer: >-
+    Press `$mod+p` to run the `setup-monitors.sh` script.  This script
+    (not shown here) should configure your outputs for multi‑monitor setups.
+
+- category: Marking & Gaps
+  question: "How do I mark a window and jump to it?"
+  answer: >-
+    To mark the focused window, press `$mod+m` and type a single character.
+    To jump to a mark, press `$mod+apostrophe` and type the same character.
+
+- category: Marking & Gaps
+  question: "How do I toggle gaps on and off?"
+  answer: >-
+    Press `$mod+Shift+g` to toggle inner gaps between windows.  Each press
+    alternates between your configured gap width and zero.
+
+- category: Focus & Movement
+  question: "How do I move focus between windows?"
+  answer: >-
+    Use `$mod+h`/`j`/`k`/`l` (or `$mod+Left`/`Down`/`Up`/`Right`) to move
+    focus left, down, up or right respectively.
+
+- category: Focus & Movement
+  question: "How do I move windows around?"
+  answer: >-
+    Hold `$mod+Shift` and press `h`/`j`/`k`/`l` (or the arrow keys) to move
+    the focused window left, down, up or right within the layout.
+
+- category: Splitting & Layout
+  question: "How do I change the split orientation?"
+  answer: >-
+    Press `$mod+b` to split the current container horizontally or `$mod+v` to
+    split it vertically.  New windows will open in that orientation.
+
+- category: Splitting & Layout
+  question: "How do I toggle fullscreen mode?"
+  answer: >-
+    Press `$mod+f` to toggle the currently focused window between fullscreen
+    and normal modes.
+
+- category: Splitting & Layout
+  question: "How do I change the window layout?"
+  answer: >-
+    Press `$mod+s` for a stacking layout, `$mod+w` for a tabbed layout or
+    `$mod+e` to toggle between horizontal and vertical split.
+
+- category: Floating & Focus Modes
+  question: "How do I toggle floating mode?"
+  answer: >-
+    Press `$mod+Shift+space` to toggle the focused window between tiling
+    and floating modes.  Use `$mod+space` to cycle focus between tiling
+    and floating windows.
+
+- category: Parent/Child Focus
+  question: "How do I focus parent or child containers?"
+  answer: >-
+    Press `$mod+a` to focus the parent container or `$mod+c` to focus a
+    child container within a split.
+
+- category: Workspaces
+  question: "How do I switch workspaces?"
+  answer: >-
+    Press `$mod+1` through `$mod+0` to jump to workspaces 1–10.  Use
+    `$mod+Ctrl+Right`/`Left` or `$mod+Tab`/`Shift+Tab` to cycle through
+    workspaces.
+
+- category: Workspaces
+  question: "How do I move a window to another workspace?"
+  answer: >-
+    With the window focused, press `$mod+Shift+<number>` to move it to
+    workspace `<number>`.  Use `$mod+Ctrl+<number>` to move the window and
+    follow it immediately.
+
+- category: Resize Mode
+  question: "How do I enter resize mode?"
+  answer: >-
+    Press `$mod+r` to enter resize mode.  Then use `h/j/k/l` or the arrow
+    keys to adjust the window size.  Press `Return`, `Escape` or `$mod+r`
+    again to exit resize mode.
+
+- category: System Mode
+  question: "How do I open system mode (suspend, reboot, etc.)?"
+  answer: >-
+    Press `$mod+Pause` to enter system mode.  Then press:
+    `l` to lock, `e` to exit i3, `u` to switch user, `s` to suspend, `h`
+    to hibernate, `r` to reboot or `Shift+s` to power off.  You can also
+    suspend directly with `$mod+Shift+s`.
+
+- category: Audio
+  question: "How do I adjust volume?"
+  answer: >-
+    Use your keyboard’s volume keys or, if unavailable, `$mod+F11` to
+    decrease volume, `$mod+F12` to increase volume and `$mod+F10` to
+    toggle mute.
+
+- category: Audio
+  question: "How do I switch audio output devices?"
+  answer: >-
+    Press `$mod+F9` to set your USB audio device as the default sink.
+    Press `$mod+F8` to switch back to the internal audio output.  Use
+    `$mod+Shift+a` to launch `pavucontrol` for more options.
+
+- category: Media
+  question: "How do I control media playback?"
+  answer: >-
+    Use the media keys on your keyboard: play/pause (`XF86AudioPlay`),
+    next track (`XF86AudioNext`) and previous track (`XF86AudioPrev`).
+
+- category: Brightness
+  question: "How do I adjust screen brightness?"
+  answer: >-
+    Use your display’s brightness keys (`XF86MonBrightnessUp` and
+    `XF86MonBrightnessDown`).  The config uses `light` or `xbacklight` under
+    the hood.
+
+- category: Screenshots
+  question: "How do I take a screenshot?"
+  answer: >-
+    Tap `Print` to copy a fullscreen screenshot to the clipboard.
+    Press `$mod+Print` and draw a rectangle to copy a selected region to the
+    clipboard.  Use `Shift+Print` to save a screenshot of a selected area
+    into `~/Pictures`.
+
+- category: Lock & Security
+  question: "How do I lock the screen?"
+  answer: >-
+    Press `$mod+Shift+x` to lock the screen with `i3lock-fancy`.  The
+    config falls back to `i3lock` if the fancy version isn’t installed.
+
+- category: i3 Management
+  question: "How do I reload the i3 configuration?"
+  answer: >-
+    Press `$mod+Shift+c` to reload your config file without restarting i3.
+
+- category: i3 Management
+  question: "How do I restart i3?"
+  answer: >-
+    Press `$mod+Shift+r` to restart i3 in place while preserving your
+    session.
+
+- category: i3 Management
+  question: "How do I exit i3?"
+  answer: >-
+    Press `$mod+Shift+e` to bring up a confirmation dialog.  Selecting the
+    button exits i3 and ends your X session.
+
+- category: i3 Management
+  question: "How do I save my current workspace layout?"
+  answer: >-
+    Press `$mod+Shift+w` to save the layout of your current workspace into
+    a JSON file under `~/.config/i3/` with a timestamp.

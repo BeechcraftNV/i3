@@ -1,86 +1,123 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# screenshot.sh — centralized, robust screenshots for i3
+# Usage: screenshot.sh [full|selection|window|gui|clipboard|config]
+set -euo pipefail
 
-# Comprehensive Screenshot Management Script
-# Usage: screenshot.sh [full|selection|window|gui|clipboard]
+CMD="${1:-selection}"
+DIR="${HOME}/Pictures/screenshots"
+TS="$(date +%Y%m%d_%H%M%S)"
+mkdir -p "${DIR}"/{full,selection,window}
 
-SCREENSHOT_DIR="$HOME/Pictures/screenshots"
-TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+have() { command -v "$1" >/dev/null 2>&1; }
 
-# Ensure directories exist
-mkdir -p "$SCREENSHOT_DIR"/{full,selection,window}
+notify() {
+  have notify-send && notify-send "$1" "$2" || true
+}
 
-case "$1" in
-    "full")
-        # Full screen screenshot - active monitor only
-        OUTPUT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).output')
-        GEOMETRY=$(xrandr | grep "\"$OUTPUT connected\"" | grep -o '[0-9]*x[0-9]*+[0-9]*+[0-9]*')
-        
-        if [ -n "$GEOMETRY" ]; then
-            flameshot screen -n 0 -p "$SCREENSHOT_DIR/full/fullscreen_$TIMESTAMP.png"
-            notify-send "Screenshot" "Full screen saved to $SCREENSHOT_DIR/full/"
-        else
-            # Fallback to all screens
-            flameshot full -p "$SCREENSHOT_DIR/full/fullscreen_$TIMESTAMP.png"
-            notify-send "Screenshot" "Full screen saved to $SCREENSHOT_DIR/full/"
-        fi
-        ;;
-    
-    "selection")
-        # Interactive selection
-        flameshot gui -p "$SCREENSHOT_DIR/selection/selection_$TIMESTAMP.png"
-        ;;
-    
-    "window")
-        # Active window screenshot
-        # Check if we have xdotool and try to get active window
-        if command -v xdotool >/dev/null 2>&1; then
-            WINDOW_ID=$(xdotool getactivewindow 2>/dev/null)
-            if [ -n "$WINDOW_ID" ]; then
-                # Use maim to capture the specific window (more reliable than Flameshot for this)
-                if command -v maim >/dev/null 2>&1; then
-                    maim --window="$WINDOW_ID" "$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
-                    # Also copy to clipboard
-                    maim --window="$WINDOW_ID" | xclip -selection clipboard -t image/png
-                    notify-send "Screenshot" "Active window captured and copied to clipboard"
-                else
-                    # Fallback to Flameshot GUI if maim not available
-                    notify-send "Screenshot" "Select the active window"
-                    flameshot gui --path="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
-                fi
-            else
-                notify-send "Screenshot" "No active window found, please select manually"
-                flameshot gui --path="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
-            fi
-        else
-            # No xdotool, fallback to manual selection
-            notify-send "Screenshot" "Select the window you want to capture"
-            flameshot gui --path="$SCREENSHOT_DIR/window/window_$TIMESTAMP.png"
-        fi
-        ;;
-    
-    "gui")
-        # Flameshot GUI mode (interactive with editing)
-        flameshot gui
-        ;;
-    
-    "clipboard")
-        # Quick selection to clipboard only
-        flameshot gui --clipboard
-        ;;
-    
-    "config")
-        # Open Flameshot configuration
-        flameshot config
-        ;;
-    
-    *)
-        echo "Usage: $0 [full|selection|window|gui|clipboard|config]"
-        echo "  full      - Full screen (active monitor)"
-        echo "  selection - Interactive selection with GUI"
-        echo "  window    - Active window"
-        echo "  gui       - Flameshot GUI with editing tools"
-        echo "  clipboard - Quick selection to clipboard only"
-        echo "  config    - Open Flameshot configuration"
-        exit 1
-        ;;
+# Copy stdin PNG to clipboard (xclip)
+to_clipboard() {
+  xclip -selection clipboard -t image/png -i
+}
+
+# Verify clipboard contains image/png (for debug)
+verify_clip() {
+  xclip -selection clipboard -t TARGETS -o 2>/dev/null | grep -qi 'image/png' && return 0 || return 1
+}
+
+# Capture helpers
+capture_full_active_monitor() {
+  # Active monitor geometry via i3 + xrandr
+  local out geom
+  out="$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).output')"
+  geom="$(xrandr --query | awk -v o="$out" '$0 ~ o" connected" { match($0, /[0-9]+x[0-9]+\+[0-9]+\+[0-9]+/, m); print m[0] }')"
+  if [[ -z "$geom" ]]; then
+    # fallback: full screen
+    have maim && maim || exit 1
+  else
+    have maim && maim -g "$geom" || exit 1
+  fi
+}
+
+capture_window() {
+  local win
+  win="$(xdotool getactivewindow 2>/dev/null || true)"
+  if [[ -n "$win" ]] && have maim; then
+    maim -i "$win"
+  else
+    # Fallback: use flameshot gui to select window
+    have flameshot && flameshot gui -c && exit 0
+    exit 1
+  fi
+}
+
+case "$CMD" in
+  full)
+    # Preferred: flameshot full to clipboard & file
+    if have flameshot; then
+      flameshot full -c -p "${DIR}/full" && notify "Screenshot" "Fullscreen → clipboard"
+    else
+      # Fallback: maim (active monitor) → clipboard
+      capture_full_active_monitor | to_clipboard
+      notify "Screenshot" "Fullscreen (maim) → clipboard"
+      # Also save file:
+      capture_full_active_monitor > "${DIR}/full/${TS}.png" || true
+    fi
+    ;;
+
+  window)
+    if have maim && have xdotool; then
+      capture_window | tee "${DIR}/window/${TS}.png" | to_clipboard
+      notify "Screenshot" "Active window → clipboard"
+    else
+      # Fallback to flameshot GUI for manual window pick
+      have flameshot && flameshot gui -c -p "${DIR}/window" && notify "Screenshot" "Window (gui) → clipboard" || {
+        notify "Screenshot" "No tool available (need flameshot or maim+xdotool)"; exit 1; }
+    fi
+    ;;
+
+  selection|clipboard)
+    # Region to clipboard (and save)
+    if have flameshot; then
+      flameshot gui -c -p "${DIR}/selection" && notify "Screenshot" "Selection → clipboard"
+    else
+      # Fallback: maim -s to clipboard & file
+      have maim || { notify "Screenshot" "maim not installed"; exit 1; }
+      have slop || { notify "Screenshot" "slop not installed for selection"; exit 1; }
+      maim -s | tee "${DIR}/selection/${TS}.png" | to_clipboard
+      notify "Screenshot" "Selection (maim) → clipboard"
+    fi
+    ;;
+
+  gui)
+    # Flameshot editor GUI (clipboard + file)
+    if have flameshot; then
+      flameshot gui -c -p "${DIR}/selection" && notify "Screenshot" "GUI → clipboard"
+    else
+      notify "Screenshot" "Flameshot not installed for GUI mode"; exit 1
+    fi
+    ;;
+
+  config)
+    have flameshot && flameshot config || { echo "Flameshot not installed"; exit 1; }
+    ;;
+
+  *)
+    cat <<EOF
+Usage: $0 [full|selection|window|gui|clipboard|config]
+  full       Fullscreen (active monitor) → clipboard (+ save)
+  selection  Region select → clipboard (+ save)
+  window     Active window → clipboard (+ save)
+  gui        Flameshot GUI editor → clipboard (+ save)
+  clipboard  Alias of 'selection'
+  config     Open Flameshot configuration
+EOF
+    exit 1
+    ;;
 esac
+
+# Optional: quick verification of clipboard
+if verify_clip; then
+  echo "Clipboard contains image/png"
+else
+  echo "Warning: clipboard does not show image/png"
+fi
