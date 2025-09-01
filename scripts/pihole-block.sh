@@ -61,7 +61,7 @@ fi
 
 # Render status
 if [[ -n "$API_URL" ]]; then
-  json=$(curl -fsSL "${API_URL%/}/summaryRaw" || true)
+  json=$(timeout 2 curl -fsSL "${API_URL%/}/summaryRaw" 2>/dev/null || true)
   if [[ -n "$json" ]]; then
     status=$(jq -r '.status // "unknown"' <<<"$json")
     ads=$(jq -r '.ads_blocked_today // 0' <<<"$json")
@@ -87,6 +87,17 @@ fi
 
 # Fallback to CLI if API failed or not configured
 status_cli=$(cli_status)
+if [[ "$status_cli" == "unknown" ]]; then
+  # Final fallback: test DNS directly
+  if timeout 2 host google.com 192.168.29.43 >/dev/null 2>&1; then
+    out "PH:DNS-OK" "$green"
+    exit 0
+  else
+    out "PH:DNS-FAIL" "$red"
+    exit 2
+  fi
+fi
+
 case "$status_cli" in
   enabled) out "PH:ENABLED" "$green" ;;
   disabled) out "PH:DISABLED" "$red" ;;
