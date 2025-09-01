@@ -168,33 +168,7 @@ This i3 configuration features a sophisticated, multi-layered intelligent help s
 
 ## 🔗 Integration Points
 
-How this configuration integrates with chezmoi, multi-monitor setups, and external dependencies.
-
-### chezmoi Dotfile Management
-
-This i3 configuration is designed to work seamlessly with chezmoi dotfile management:
-
-```bash
-# Add changes to chezmoi tracking
-chezmoi add ~/.config/i3/config
-chezmoi add ~/.config/i3/scripts/
-chezmoi add ~/.config/i3/WARP.md
-
-# Apply changes across machines
-chezmoi apply
-
-# View differences before applying
-chezmoi diff
-
-# Source location for templates/modifications
-# ~/.local/share/chezmoi/dot_config/i3/
-```
-
-**Key Integration Features:**
-- All scripts automatically gain execute permissions via chezmoi
-- Configuration templates can be customized per machine
-- Learning data (`learning_data.json`, `usage_analytics.json`) is machine-specific and not tracked
-- Search dictionaries are synchronized across machines for consistent help experience
+How this configuration integrates with multi-monitor setups and external dependencies.
 
 ### Multi-Monitor Support
 
@@ -368,11 +342,11 @@ Cookbook-style guides for extending and maintaining the configuration.
    # Should automatically categorize under "Audio & Media"
    ```
 
-5. **Sync with chezmoi:**
+5. **Commit changes:**
    ```bash
-   chezmoi add ~/.config/i3/config
-   chezmoi add ~/.config/i3/keybindings.txt
-   chezmoi add ~/.config/i3/keybindings.html
+   # Commit changes to version control
+   git add config keybindings.txt keybindings.html
+   git commit -m "Add new keybinding for pavucontrol"
    ```
 
 ### Teaching the AI New Concepts
@@ -504,51 +478,44 @@ cat scripts/learning_data.json | jq '.insights[] | select(.confidence_score > 0.
    # exec --no-startup-id sh -c "sleep 2 && i3-msg 'workspace \"2:Browser\"; exec brave'"
    ```
 
-### Syncing with chezmoi
+### Version Control Management
 
-**Complete workflow for managing changes across machines:**
+**Complete workflow for managing changes with Git:**
 
 1. **Add new/modified files:**
    ```bash
    # Add all i3 configuration changes
-   chezmoi add ~/.config/i3/config
-   chezmoi add ~/.config/i3/scripts/
-   chezmoi add ~/.config/i3/WARP.md
+   git add config scripts/ WARP.md
    
-   # Note: Learning data is NOT synced (machine-specific)
-   # Files like learning_data.json, usage_analytics.json stay local
+   # Note: Learning data is machine-specific and should not be tracked
+   # Add to .gitignore: learning_data.json, usage_analytics.json
    ```
 
 2. **Review changes before committing:**
    ```bash
-   # See what will be synced
-   chezmoi diff
+   # See what will be committed
+   git diff --cached
    
    # Check status
-   chezmoi status
+   git status
    ```
 
 3. **Commit and push:**
    ```bash
-   # Navigate to chezmoi source
-   chezmoi cd
-   
    # Commit changes
-   git add .
    git commit -m "i3: Add new keybindings and improve help system"
    
    # Push to repository
    git push origin main
    ```
 
-4. **Apply on other machines:**
+4. **Sync on other machines:**
    ```bash
    # On target machine, pull latest changes
-   chezmoi update
+   git pull origin main
    
-   # Or more carefully:
-   chezmoi diff
-   chezmoi apply
+   # Reload i3 configuration
+   i3-msg reload
    ```
 
 ### Custom Script Development
